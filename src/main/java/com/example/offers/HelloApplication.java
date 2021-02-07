@@ -10,8 +10,8 @@ import java.util.Set;
 
 @ApplicationPath("/api")
 public class HelloApplication extends Application {
-    public Set<Class<?>> getClasses() {
-        return new HashSet<Class<?>>(Arrays.asList(HelloResource.class));
+public Set<Class<?>> getClasses() {
+        return new HashSet<Class<?>>(Arrays.asList(HelloResource.class, OffersAPI.class));
     }
 
 
