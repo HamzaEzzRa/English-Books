@@ -1,20 +1,29 @@
 package com.titsuite.offers;
 
+import java.util.Date;
+
 public class Offer{
 
     private int ID;
     private String description;
     private String city;
-    private String startDay;
-    private int refCustomer;
-    private String status="UNPUBLISHED";
+    private int minimumWage;
 
-    public Offer(int ID, String description, String city, String startDay, int refCustomer) {
+    private String status="UNPUBLISHED";
+    private int refCustomer;
+    private  String  startDay;
+
+
+
+
+    public Offer(int ID, String description, String city, int minimumWage, String status, int refCustomer, String startDay) {
         this.ID = ID;
         this.description = description;
         this.city = city;
-        this.startDay = startDay;
+        this.minimumWage = minimumWage;
+        this.status = status;
         this.refCustomer = refCustomer;
+        this.startDay = startDay;
     }
 
     public int getID() {
@@ -29,16 +38,20 @@ public class Offer{
         return city;
     }
 
-    public String getStartDay() {
-        return startDay;
+    public int getMinimumWage() {
+        return minimumWage;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public int getRefCustomer() {
         return refCustomer;
     }
 
-    public String getStatus() {
-        return status;
+    public  String  getStartDay() {
+        return startDay;
     }
 
     public void setID(int ID) {
@@ -53,15 +66,19 @@ public class Offer{
         this.city = city;
     }
 
-    public void setStartDay(String startDay) {
-        this.startDay = startDay;
+    public void setMinimumWage(int minimumWage) {
+        this.minimumWage = minimumWage;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setRefCustomer(int refCustomer) {
         this.refCustomer = refCustomer;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStartDay( String  startDay) {
+        this.startDay = startDay;
     }
 }
