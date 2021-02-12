@@ -9,5 +9,6 @@ CREATE TABLE FREELANCER (
     city VARCHAR(255),
     street VARCHAR(255),
     activity VARCHAR(255),
-    minimum_wage NUMBER(38, 2)
+    minimum_wage NUMBER(38, 2),
+    refresh_token VARCHAR2(4000)
 )

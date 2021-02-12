@@ -8,5 +8,6 @@ CREATE TABLE CUSTOMER (
     birth_date DATE,
     city VARCHAR(255),
     street VARCHAR(255),
-    subscription VARCHAR(255) DEFAULT 'BASIC' CHECK (subscription in ('BASIC', 'PREMIUM'))
+    subscription VARCHAR(255) DEFAULT 'BASIC' CHECK (subscription in ('BASIC', 'PREMIUM')),
+    refresh_token VARCHAR2(4000)
 )

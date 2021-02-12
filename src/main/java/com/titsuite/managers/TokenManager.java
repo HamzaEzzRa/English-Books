@@ -10,6 +10,7 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 
+import javax.ws.rs.container.ContainerRequestContext;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
@@ -69,5 +70,14 @@ public class TokenManager {
 
         return jwtClaims.getClaimsMap();
     }
+
+  /*public static int getIdUser(String token) throws InvalidJwtException{  //gets the user ID from the JWT ! To be reviewed..
+        Map<String, Object> userToken=validateJWT(token);
+        int id= (int) userToken.get("id");
+
+        return id;
+    }*/
+
+
 
 }

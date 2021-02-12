@@ -1,6 +1,6 @@
 package com.titsuite.app;
 
-import com.titsuite.offers.OffersAPI;
+import com.titsuite.offers.OffersResource;
 import com.titsuite.filters.AuthenticationFilter;
 import com.titsuite.utils.DebugMapper;
 import com.titsuite.users.UserResource;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class ServerApplication extends Application {
     public Set<Class<?>> getClasses() {
         return new HashSet<Class<?>>(Arrays.asList(
-            AuthenticationFilter.class, DebugMapper.class, UserResource.class, OffersAPI.class
+            AuthenticationFilter.class, DebugMapper.class, UserResource.class, OffersResource.class
         ));
     }
 }

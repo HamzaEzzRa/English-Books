@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-<<<<<<< HEAD
-    <data-source source="LOCAL" name="@localhost" uuid="858e924f-c586-47af-ab6d-23659b9a51d7">
-=======
-    <data-source source="LOCAL" name="Oracle - @localhost" uuid="3978218b-c7f4-47f7-a636-7ece6a29db7c">
->>>>>>> 110178a81941774d6621bd463253437a94931e0f
-      <driver-ref>oracle.19</driver-ref>
-      <synchronize>true</synchronize>
-      <auto-commit>false</auto-commit>
-      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-<<<<<<< HEAD
-      <jdbc-url>jdbc:oracle:thin:@//localhost:1521/ORCLCDB</jdbc-url>
-=======
-      <jdbc-url>jdbc:oracle:thin:@localhost:1521:XE</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="@localhost" uuid="72949c10-7562-419b-a761-03b4ddc0a455">
+    <data-source source="LOCAL" name="@localhost" uuid="b3d38500-e795-4e9c-8afa-5faf518fe3e9">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
       <jdbc-url>jdbc:oracle:thin:@localhost:1521:ORCLCDB</jdbc-url>
->>>>>>> 110178a81941774d6621bd463253437a94931e0f
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

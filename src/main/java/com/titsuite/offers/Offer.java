@@ -9,14 +9,23 @@ public class Offer{
     private String city;
     private int minimumWage;
 
-    private String status="UNPUBLISHED";
-    private int refCustomer;
+    private static String status="PRIVATE";
+    private String refCustomer;
     private  String  startDay;
 
 
+    public Offer(){};
+    public Offer( String description, String city, int minimumWage, String status, String refCustomer, String startDay) {
 
+        this.description = description;
+        this.city = city;
+        this.minimumWage = minimumWage;
+        this.status = status;
+        this.refCustomer = refCustomer;
+        this.startDay = startDay;
+    }
 
-    public Offer(int ID, String description, String city, int minimumWage, String status, int refCustomer, String startDay) {
+    public Offer(int ID, String description, String city, int minimumWage, String status, String refCustomer, String startDay) {
         this.ID = ID;
         this.description = description;
         this.city = city;
@@ -30,55 +39,67 @@ public class Offer{
         return ID;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public int getMinimumWage() {
-        return minimumWage;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public int getRefCustomer() {
-        return refCustomer;
-    }
-
-    public  String  getStartDay() {
-        return startDay;
-    }
-
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getCity() {
+        return city;
+    }
+
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public int getMinimumWage() {
+        return minimumWage;
     }
 
     public void setMinimumWage(int minimumWage) {
         this.minimumWage = minimumWage;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public static String getStatus() {
+        return status;
     }
 
-    public void setRefCustomer(int refCustomer) {
+    public static void setStatus(String status) {
+        Offer.status = status;
+    }
+
+    public String getRefCustomer() {
+        return refCustomer;
+    }
+
+    public void setRefCustomer(String refCustomer) {
         this.refCustomer = refCustomer;
     }
 
-    public void setStartDay( String  startDay) {
+    public String getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(String startDay) {
         this.startDay = startDay;
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "ID=" + ID +
+                ", description='" + description + '\'' +
+                ", city='" + city + '\'' +
+                ", minimumWage=" + minimumWage +
+                ", refCustomer=" + refCustomer +
+                ", startDay='" + startDay + '\'' +
+                '}';
     }
 }
