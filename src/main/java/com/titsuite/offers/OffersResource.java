@@ -34,19 +34,20 @@ public class OffersResource {
          //int refCustomer= Integer.parseInt(id);
 
 
-        Offer newOffer=new Offer( offer.getDescription(), offer.getCity(),offer.getMinimumWage(), offer.getStatus(), "3445", offer.getStartDay());
+        Offer newOffer=new Offer( offer.getDescription(), offer.getCity(),offer.getMinimumWage(), offer.getStatus(), "3445", offer.getStartDay(), offer.getActivity());
         System.out.println(newOffer.getRefCustomer()+"   "+ newOffer.getStatus());
         try {
 
 
         connection= ConnectionFactory.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO OFFERS(DESCRIPTION, CITY, MINIMUMWAGE, STATUS, REFCUSTOMER, STARTDAY) VALUES(?,?,?,?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO OFFERS(DESCRIPTION, CITY, MINIMUMWAGE, STATUS, REFCUSTOMER, STARTDAY) VALUES(?,?,?,?,?,?,?)");
         preparedStatement.setString(1, newOffer.getDescription());
             preparedStatement.setString(2, newOffer.getCity());
             preparedStatement.setInt(3, newOffer.getMinimumWage());
             preparedStatement.setString(4, newOffer.getStatus());
             preparedStatement.setString(5, newOffer.getRefCustomer());
             preparedStatement.setString(6, newOffer.getStartDay());
+            preparedStatement.setString(7, newOffer.getActivity());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -81,7 +82,7 @@ public class OffersResource {
 
 
             while (resultSet.next()) {
-                Offer temp=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7));
+                Offer temp=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7), resultSet.getString(8));
                 allOffers.add(temp);
 
 
@@ -107,7 +108,7 @@ public class OffersResource {
             ResultSet resultSet=stmt.executeQuery();
 
             while(resultSet.next()){
-                Offer data=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7));
+                Offer data=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7), resultSet.getString(8));
                 filteredOffersByCity.add(data);
             }
 
@@ -132,7 +133,7 @@ public class OffersResource {
             ResultSet resultSet=statement2.executeQuery();
 
             while(resultSet.next()){
-                Offer data=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7));
+                Offer data=new Offer(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5),resultSet.getString(6),resultSet.getString(7), resultSet.getString(8));
                 filteredOffersById.add(data);
             }
 

@@ -12,10 +12,11 @@ public class Offer{
     private static String status="PRIVATE";
     private String refCustomer;
     private  String  startDay;
+    private String activity;
 
 
     public Offer(){};
-    public Offer( String description, String city, int minimumWage, String status, String refCustomer, String startDay) {
+    public Offer( String description, String city, int minimumWage, String status, String refCustomer, String startDay, String activity) {
 
         this.description = description;
         this.city = city;
@@ -23,9 +24,10 @@ public class Offer{
         this.status = status;
         this.refCustomer = refCustomer;
         this.startDay = startDay;
+        this.activity=activity;
     }
 
-    public Offer(int ID, String description, String city, int minimumWage, String status, String refCustomer, String startDay) {
+    public Offer(int ID, String description, String city, int minimumWage, String status, String refCustomer, String startDay, String activity) {
         this.ID = ID;
         this.description = description;
         this.city = city;
@@ -33,6 +35,15 @@ public class Offer{
         this.status = status;
         this.refCustomer = refCustomer;
         this.startDay = startDay;
+        this.activity=activity;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
     public int getID() {
