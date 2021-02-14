@@ -12,57 +12,96 @@ import org.jose4j.lang.JoseException;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import java.io.IOException;
+import java.security.Key;
+import java.security.PrivateKey;
 import java.util.Map;
 import java.util.Properties;
 
 public class TokenManager {
 
-    private static RsaJsonWebKey rsaJsonWebKey = null;
+    public enum KeySelection {
+        AUTHENTICATION_KEY,
+        REFRESH_KEY
+    }
+
+    private static RsaJsonWebKey rsaJsonAuthKey = null;
+    private static RsaJsonWebKey rsaJsonRefreshKey = null;
     private static final String issuer = "titsuite.com";
-    private static final int timeToLive = 30;
+    private static final int authTTL = 15; // 15 minutes until authentication token expiration
+    private static final int refreshTTL = 10080; // 1 Week == 10080 Minutes
 
     static {
         try {
             Properties properties = new Properties();
             properties.load(TokenManager.class.getClassLoader().getResourceAsStream("config.properties"));
-            String jwkJson = properties.getProperty("privateKey");
-            PublicJsonWebKey publicJsonWebKey = PublicJsonWebKey.Factory.newPublicJwk(jwkJson);
-            rsaJsonWebKey = (RsaJsonWebKey) publicJsonWebKey;
+            String jwkAuthJson = properties.getProperty("authKey");
+            String jwkRefreshJson = properties.getProperty("refreshKey");
+            rsaJsonAuthKey = (RsaJsonWebKey) PublicJsonWebKey.Factory.newPublicJwk(jwkAuthJson);
+            rsaJsonRefreshKey = (RsaJsonWebKey) PublicJsonWebKey.Factory.newPublicJwk(jwkRefreshJson);
         } catch (JoseException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String generateJWT(String id, String role) throws JoseException {
-        rsaJsonWebKey.setKeyId("key1");
+    public static String generateJWT(Map<String, Object> toEncryptMap, KeySelection selection) throws JoseException {
+        int ttl = 0;
+        String keyId = null;
+        PrivateKey privateKey = null;
+        String header = "";
+
+        if (selection == KeySelection.AUTHENTICATION_KEY) {
+            rsaJsonAuthKey.setKeyId("auth_key");
+            ttl = authTTL;
+            keyId = rsaJsonAuthKey.getKeyId();
+            privateKey = rsaJsonAuthKey.getPrivateKey();
+            header += "Bearer ";
+        }
+        else if (selection == KeySelection.REFRESH_KEY) {
+            rsaJsonRefreshKey.setKeyId("refresh_key");
+            ttl = refreshTTL;
+            keyId = rsaJsonRefreshKey.getKeyId();
+            privateKey = rsaJsonRefreshKey.getPrivateKey();
+        }
 
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(issuer);
-        claims.setExpirationTimeMinutesInTheFuture(timeToLive);
         claims.setGeneratedJwtId();
+        claims.setExpirationTimeMinutesInTheFuture(ttl);
         claims.setIssuedAtToNow();
         claims.setNotBeforeMinutesInThePast(2);
-        claims.setClaim("id", id);
-        claims.setClaim("role", role);
+
+        for (Map.Entry<String, Object> entry : toEncryptMap.entrySet())
+            claims.setClaim(entry.getKey(), entry.getValue());
 
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
-        jws.setKey(rsaJsonWebKey.getPrivateKey());
-        jws.setKeyIdHeaderValue(rsaJsonWebKey.getKeyId());
+        jws.setKey(privateKey);
+        jws.setKeyIdHeaderValue(keyId);
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
 
-        return "Bearer " + jws.getCompactSerialization();
+        return header + jws.getCompactSerialization();
     }
 
-    public static Map<String, Object> validateJWT(String token) throws InvalidJwtException {
-        token = token.split("Bearer ")[1];
+    public static Map<String, Object> validateJWT(String token, KeySelection selection) throws InvalidJwtException {
+        int maximumValidity = 0;
+        Key key = null;
+
+        if (selection == KeySelection.AUTHENTICATION_KEY) {
+            token = token.split("Bearer ")[1];
+            maximumValidity = authTTL;
+            key = rsaJsonAuthKey.getKey();
+        }
+        else if (selection == KeySelection.REFRESH_KEY) {
+            maximumValidity = refreshTTL;
+            key = rsaJsonRefreshKey.getKey();
+        }
 
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()
             .setRequireExpirationTime()
-            .setMaxFutureValidityInMinutes(300)
+            .setMaxFutureValidityInMinutes(maximumValidity)
             .setAllowedClockSkewInSeconds(30)
             .setExpectedIssuer(issuer)
-            .setVerificationKey(rsaJsonWebKey.getKey())
+            .setVerificationKey(key)
             .build();
 
         JwtClaims jwtClaims = jwtConsumer.processToClaims(token);

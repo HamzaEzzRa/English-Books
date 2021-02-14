@@ -14,26 +14,23 @@ public class Customer extends User {
     public Customer() {}
 
     public Customer(long id, String email, String hashedPassword, String firstName, String lastName,
-        String phoneNumber, Date birthDate, String city, String street, String subscription) {
-        super(id, email, hashedPassword, firstName, lastName, phoneNumber, birthDate, city, street);
+        String phoneNumber, Date birthDate, String city, String street, String subscription, String refreshToken,
+        String verificationCode, int isActive, Date resendTimeout) {
+        super(id, email, hashedPassword, firstName, lastName, phoneNumber, birthDate, city, street, refreshToken,
+        verificationCode, isActive, resendTimeout);
         setSubscription(subscription);
     }
 
     public Customer(User user) {
-        setId(user.getId());
-        setEmail(user.getEmail());
-        setHashedPassword(user.getHashedPassword());
-        setFirstName(user.getFirstName());
-        setLastName(user.getLastName());
-        setPhoneNumber(user.getPhoneNumber());
-        setBirthDate(user.getBirthDate());
-        setCity(user.getCity());
-        setStreet(user.getStreet());
+        super(user.getId(), user.getEmail(), user.getHashedPassword(), user.getFirstName(), user.getLastName(),
+            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getStreet(), user.getRefreshToken(),
+            user.getVerificationCode(), user.getIsActive(), user.getResendTimeout());
     }
 
     public Customer(User user, String subscription) {
         this(user.getId(), user.getEmail(), user.getHashedPassword(), user.getFirstName(), user.getLastName(),
-            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getStreet(), subscription);
+            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getStreet(), subscription,
+            user.getRefreshToken(), user.getVerificationCode(), user.getIsActive(), user.getResendTimeout());
     }
 
     public String getSubscription() {

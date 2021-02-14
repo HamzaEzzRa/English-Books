@@ -17,11 +17,16 @@ public class User implements JsonSerializable {
     protected Date birthDate;
     protected String city;
     protected String street;
+    protected String refreshToken;
+    protected String verificationCode;
+    protected int isActive;
+    protected Date resendTimeout;
 
     public User() {}
 
     public User(long id, String email, String hashedPassword, String firstName, String lastName,
-        String phoneNumber, Date birthDate, String city, String street) {
+        String phoneNumber, Date birthDate, String city, String street, String refreshToken,
+        String verificationCode, int isActive, Date resendTimeout) {
         this.setId(id);
         this.setEmail(email);
         this.setHashedPassword(hashedPassword);
@@ -31,6 +36,10 @@ public class User implements JsonSerializable {
         this.setBirthDate(birthDate);
         this.setCity(city);
         this.setStreet(street);
+        this.setRefreshToken(refreshToken);
+        this.setVerificationCode(verificationCode);
+        this.setIsActive(isActive);
+        this.setResendTimeout(resendTimeout);
     }
 
     public long getId() {
@@ -86,6 +95,25 @@ public class User implements JsonSerializable {
     public String getStreet() { return this.street; }
 
     public void setStreet(String street) { this.street = street; }
+
+    public String getRefreshToken() { return this.refreshToken; }
+
+    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
+
+    public String getVerificationCode() { return this.verificationCode; }
+
+    public void setVerificationCode(String verificationCode) { this.verificationCode = verificationCode; }
+
+    public int getIsActive() { return this.isActive; }
+
+    public void setIsActive(int isActive) {
+        if (isActive == 0 || isActive == 1)
+            this.isActive = isActive;
+    }
+
+    public Date getResendTimeout() { return this.resendTimeout; }
+
+    public void setResendTimeout(Date resendTimeout) { this.resendTimeout = resendTimeout; }
 
     @Override
     public JSONObject toJson() throws JSONException {
