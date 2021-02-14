@@ -1,0 +1,21 @@
+.landing-row {
+    margin: 10% 5%;
+}
+
+.get-started-button {
+    border-radius: 10%;
+}
+
+.card  {
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+.Cards card{
+    float: center;
+}
+
+.Footer{
+    margin: 10% 7% 3% 10%;
+}

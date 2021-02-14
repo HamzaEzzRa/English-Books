@@ -1,0 +1,24 @@
+.Header{
+    font-size: 18px;
+    padding-top: 3%;
+    padding-right: 4%;
+}
+
+.rightFloat{
+    float: right;
+}
+
+.leftFloat{
+    float: left;
+}
+
+.serviceItem{
+    padding: 2%;
+    /* box-shadow: 0.5em 0 .7em rgb(241, 241, 241), -0.5em 0 .7em rgb(233, 233, 233); */
+    background-color: #CAF0F8;
+    border-top: black;
+}
+
+.serviceItem:hover {
+    background-color: whitesmoke;
+}

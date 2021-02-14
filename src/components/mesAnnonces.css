@@ -1,0 +1,28 @@
+#price{
+    float: right;
+}
+
+#date {
+    float: left;
+}
+
+#nbOfServices{
+    float: left;
+}
+
+#recent{
+    float: right;
+}
+
+
+.filterRow{
+    padding: 3%;
+    font-size: 15px;
+}
+
+.card{
+    border-radius: 70px;
+    font-size: 14px;
+    margin: 4%;
+}
+
