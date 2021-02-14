@@ -45,7 +45,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         if (!method.isAnnotationPresent(PermitAll.class)) {
             if (method.isAnnotationPresent(DenyAll.class)) {
                 requestContext.abortWith(
-                    ResponseBuilder.createResponse(Response.Status.FORBIDDEN, ACCESS_FORBIDDEN)
+                        ResponseBuilder.createResponse(Response.Status.FORBIDDEN, ACCESS_FORBIDDEN)
                 );
                 return;
             }
@@ -56,7 +56,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             if (authProperty == null || authProperty.isEmpty()) {
                 logger.warn("No token has been provided!");
                 requestContext.abortWith(
-                    ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
                 return;
             }
@@ -66,13 +66,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             String jwt = authProperty.get(0);
 
             try {
-                Map<String, Object> jwtMap = TokenManager.validateJWT(jwt);
+                Map<String, Object> jwtMap = TokenManager.validateJWT(jwt,
+                        TokenManager.KeySelection.AUTHENTICATION_KEY);
                 id = (String) jwtMap.get("id");
                 role = (String) jwtMap.get("role");
             } catch (InvalidJwtException e) {
                 logger.warn("Invalid token provided!");
                 requestContext.abortWith(
-                    ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
                 return;
             }
@@ -81,23 +82,25 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             User user = null;
 
             try {
-                if (userDao.isCustomer(role))
-                    user = userDao.findCustomerById(Long.parseLong(id));
-                else if (userDao.isFreelancer(role))
-                    user = userDao.findFreelancerById(Long.parseLong(id));
-                else if (userDao.isStaff(role))
-                    user = userDao.findStaffById(Long.parseLong(id));
+                if (userDao.roleValidityCheck(role))
+                    user = userDao.findUserById(role, Long.parseLong(id));
+                else {
+                    logger.warn("Invalid token provided!");
+                    requestContext.abortWith(
+                            ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                    );
+                }
             } catch (SQLException e) {
                 logger.warn("Invalid token provided!");
                 requestContext.abortWith(
-                    ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
             }
 
             if (user == null) {
                 logger.warn("Invalid Token!");
                 requestContext.abortWith(
-                    ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
                 return;
             }
@@ -109,18 +112,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 if (!isUserAllowed(role, rolesSet)) {
                     logger.warn("User does not have the rights to access this resource!");
                     requestContext.abortWith(
-                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_DENIED)
+                            ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_DENIED)
                     );
                     return;
                 }
             }
 
-            List<String> idList = new ArrayList<>();
-            idList.add(id);
-            List<String> roleList = new ArrayList<>();
-            roleList.add(role);
-            headers.put(HEADER_PROPERTY_ID, idList);
-            headers.put(HEADER_PROPERTY_ROLE, roleList);
+            headers.put(HEADER_PROPERTY_ID, Collections.singletonList(id));
+            headers.put(HEADER_PROPERTY_ROLE, Collections.singletonList(role));
         }
     }
 
