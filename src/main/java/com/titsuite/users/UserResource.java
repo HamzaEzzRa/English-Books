@@ -40,6 +40,9 @@ public class UserResource {
             User newUser = new User();
             newUser.setEmail(credentials.getEmail());
             newUser.setHashedPassword(PasswordManager.hashPassword(credentials.getPassword()));
+            newUser.setStreet(credentials.getAddress());
+            newUser.setCity(credentials.getCity());
+            newUser.setPhoneNumber(credentials.getPhoneNumber());
 
             RandomStringGenerator rsg = new RandomStringGenerator(32);
             String verificationCode = rsg.nextString();

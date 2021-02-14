@@ -5,6 +5,9 @@ public class AuthCredentials {
     private String email;
     private String password;
     private String role;
+    private String address;
+    private String city;
+    private String phoneNumber;
 
     public AuthCredentials() {}
 
@@ -12,6 +15,16 @@ public class AuthCredentials {
         setEmail(email);
         setPassword(password);
         setRole(role);
+    }
+
+    public AuthCredentials(String email, String password, String role, String address, String city,
+        String phoneNumber) {
+        setEmail(email);
+        setPassword(password);
+        setRole(role);
+        setAddress(address);
+        setCity(city);
+        setPhoneNumber(phoneNumber);
     }
 
     public String getEmail() { return this.email; }
@@ -26,10 +39,16 @@ public class AuthCredentials {
 
     public void setRole(String role) { this.role = role; }
 
-    @Override
-    public String toString() {
-        return "AuthCredentials [email=" + getEmail() + ", role=" + getRole() +
-            ", password=" + getPassword() + "]";
-    }
+    public String getAddress() { return this.address; }
+
+    public void setAddress(String address) { this.address = address; }
+
+    public String getCity() { return this.city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public String getPhoneNumber() { return this.phoneNumber; }
+
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
 }
