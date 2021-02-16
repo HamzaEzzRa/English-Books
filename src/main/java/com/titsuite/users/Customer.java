@@ -14,22 +14,22 @@ public class Customer extends User {
     public Customer() {}
 
     public Customer(long id, String email, String hashedPassword, String firstName, String lastName,
-        String phoneNumber, Date birthDate, String city, String street, String subscription, String refreshToken,
+        String phoneNumber, Date birthDate, String city, String address, String subscription, String refreshToken,
         String verificationCode, int isActive, Date resendTimeout) {
-        super(id, email, hashedPassword, firstName, lastName, phoneNumber, birthDate, city, street, refreshToken,
+        super(id, email, hashedPassword, firstName, lastName, phoneNumber, birthDate, city, address, refreshToken,
         verificationCode, isActive, resendTimeout);
         setSubscription(subscription);
     }
 
     public Customer(User user) {
         super(user.getId(), user.getEmail(), user.getHashedPassword(), user.getFirstName(), user.getLastName(),
-            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getStreet(), user.getRefreshToken(),
+            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getAddress(), user.getRefreshToken(),
             user.getVerificationCode(), user.getIsActive(), user.getResendTimeout());
     }
 
     public Customer(User user, String subscription) {
         this(user.getId(), user.getEmail(), user.getHashedPassword(), user.getFirstName(), user.getLastName(),
-            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getStreet(), subscription,
+            user.getPhoneNumber(), user.getBirthDate(), user.getCity(), user.getAddress(), subscription,
             user.getRefreshToken(), user.getVerificationCode(), user.getIsActive(), user.getResendTimeout());
     }
 
@@ -57,8 +57,9 @@ public class Customer extends User {
         jsonObject.put("firstName", getFirstName());
         jsonObject.put("lastName", getLastName());
         jsonObject.put("phoneNumber", getPhoneNumber());
+        jsonObject.put("birthDate", getBirthDate().getTime());
         jsonObject.put("city", getCity());
-        jsonObject.put("street", getStreet());
+        jsonObject.put("address", getAddress());
         jsonObject.put("subscription", getSubscription());
         return jsonObject;
     }

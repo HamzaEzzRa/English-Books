@@ -1,6 +1,8 @@
 package com.titsuite.users;
 
+import com.titsuite.dao.DiplomaDAO;
 import com.titsuite.dao.UserDAO;
+import com.titsuite.diplomas.Diploma;
 import com.titsuite.exceptions.UserExistsException;
 import com.titsuite.exceptions.UserNotFoundException;
 import com.titsuite.filters.AuthenticationFilter;
@@ -19,6 +21,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.mail.MessagingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -33,14 +36,14 @@ public class UserResource {
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response register(AuthCredentials credentials) {
+    public Response register(final AuthCredentials credentials) {
         UserDAO userDao = new UserDAO();
 
         try {
             User newUser = new User();
             newUser.setEmail(credentials.getEmail());
             newUser.setHashedPassword(PasswordManager.hashPassword(credentials.getPassword()));
-            newUser.setStreet(credentials.getAddress());
+            newUser.setAddress(credentials.getAddress());
             newUser.setCity(credentials.getCity());
             newUser.setPhoneNumber(credentials.getPhoneNumber());
 
@@ -128,7 +131,7 @@ public class UserResource {
     @Path("/resendVerification")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response resendVerification(AuthCredentials credentials) {
+    public Response resendVerification(final AuthCredentials credentials) {
         UserDAO userDao = new UserDAO();
 
         if (!userDao.roleValidityCheck(credentials.getRole()))
@@ -191,7 +194,7 @@ public class UserResource {
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(AuthCredentials credentials) {
+    public Response login(final AuthCredentials credentials) {
         UserDAO userDao = new UserDAO();
         User foundUser;
 
@@ -206,7 +209,7 @@ public class UserResource {
 
             if (foundUser.getIsActive() == 0)
                 return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED,
-                    "Account is not yet verified!");
+            "Account is not yet verified!");
 
             // Authentication token to be sent back to caller (Valid for 30 minutes)
             Map<String, Object> authDataMap = new HashMap<>(4, 1f);
@@ -229,7 +232,10 @@ public class UserResource {
             Map<String, Object> claimsMap = new HashMap<>(2, 1f);
             claimsMap.put(AuthenticationFilter.AUTHORIZATION_PROPERTY, authToken);
 
-            return ResponseBuilder.createResponse(Response.Status.ACCEPTED, claimsMap);
+            NewCookie authCookie = new NewCookie(AuthenticationFilter.AUTHORIZATION_PROPERTY, authToken, "/",
+            "", null, TokenManager.getAuthTTL() * 60, false, true);
+
+            return ResponseBuilder.createResponse(Response.Status.ACCEPTED, authCookie, claimsMap);
         } catch (UserNotFoundException e) {
             return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, e.getMessage());
         } catch (SQLException | JoseException e) {
@@ -258,13 +264,120 @@ public class UserResource {
             Map<String, Object> claimsMap = new HashMap<>(2, 1f);
             claimsMap.put(AuthenticationFilter.AUTHORIZATION_PROPERTY, authToken);
 
-            return ResponseBuilder.createResponse(Response.Status.OK, claimsMap);
+            NewCookie authCookie = new NewCookie(AuthenticationFilter.AUTHORIZATION_PROPERTY, authToken, "/",
+            "", null, TokenManager.getAuthTTL() * 60, false, true);
+
+            return ResponseBuilder.createResponse(Response.Status.ACCEPTED, authCookie, claimsMap);
         } catch (UserNotFoundException e) {
             return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, e.getMessage());
         } catch (InvalidJwtException e) {
             return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED,
-                "Your session has expired. Please login again!");
+            "Your session has expired. Please login again!");
         } catch (SQLException | NumberFormatException | JoseException e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @POST
+    @RolesAllowed({ "customer", "freelancer", "staff" })
+    @Path("/logout")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logout(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) final String id,
+        @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ROLE) final String role) {
+        NewCookie authCookie = new NewCookie(AuthenticationFilter.AUTHORIZATION_PROPERTY, "", null,
+        null, null,0, false, true);
+
+        new Thread(() -> {
+            UserDAO userDao = new UserDAO();
+            Map<String, Object> conditionMap = new HashMap<>(2, 1f);
+            conditionMap.put("ID", Long.parseLong(id));
+            Map<String, Object> dataMap = new HashMap<>(2, 1f);
+            dataMap.put("REFRESH_TOKEN", null);
+
+            try {
+                userDao.updateUser(role, conditionMap, dataMap);
+            } catch (SQLException | NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        return ResponseBuilder.createResponse(Response.Status.OK, authCookie, "Logged out successfully!");
+    }
+
+    @GET
+    @RolesAllowed({ "customer", "freelancer", "staff" })
+    @Path("/profile")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProfile(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) final String id,
+        @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ROLE) final String role) {
+        UserDAO userDao = new UserDAO();
+
+        try {
+            long userId = Long.parseLong(id);
+            User foundUser = userDao.findUserById(role, userId);
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("email", foundUser.getEmail());
+            responseMap.put("firstName", foundUser.getFirstName());
+            responseMap.put("lastName", foundUser.getLastName());
+            responseMap.put("phoneNumber", foundUser.getPhoneNumber());
+            responseMap.put("birthDate", foundUser.getBirthDate().getTime());
+            responseMap.put("city", foundUser.getCity());
+            responseMap.put("address", foundUser.getAddress());
+
+            if (userDao.isCustomer(role))
+                responseMap.put("subscription", ((Customer) foundUser).getSubscription());
+            else if (userDao.isFreelancer(role)) {
+                DiplomaDAO diplomaDao = new DiplomaDAO();
+                List<Diploma> diplomaList = diplomaDao.findFreelancerDiplomas(userId);
+                responseMap.put("activity", ((Freelancer) foundUser).getActivity());
+                responseMap.put("minimumWage", ((Freelancer) foundUser).getMinimumWage());
+                responseMap.put("diplomas", ResponseBuilder.buildJSONArray(diplomaList).toString());
+            }
+            else if (userDao.isStaff(role))
+                responseMap.put("role", ((Staff) foundUser).getRole());
+
+            return ResponseBuilder.createResponse(Response.Status.OK, responseMap);
+        } catch (UserNotFoundException e) {
+            return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, e.getMessage());
+        } catch (SQLException | NumberFormatException e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @POST
+    @RolesAllowed({ "customer", "freelancer", "staff" })
+    @Path("/profile/update")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateProfile(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) final String id,
+        @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ROLE) final String role, AuthCredentials credentials) {
+        UserDAO userDao = new UserDAO();
+
+        try {
+            Map<String, Object> conditionMap = new HashMap<>(2, 1f);
+            conditionMap.put("ID", Long.parseLong(id));
+
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("FIRST_NAME", credentials.getFirstName());
+            dataMap.put("LAST_NAME", credentials.getLastName());
+            dataMap.put("PHONE_NUMBER", credentials.getPhoneNumber());
+            dataMap.put("BIRTH_DATE", credentials.getBirthDate() == null ?
+                new GregorianCalendar(1, Calendar.JANUARY, 1).getTime() : credentials.getBirthDate());
+            dataMap.put("CITY", credentials.getCity());
+            dataMap.put("ADDRESS", credentials.getAddress());
+
+            if (userDao.isCustomer(role))
+                dataMap.put("SUBSCRIPTION", credentials.getSubscription());
+            else if (userDao.isFreelancer(role)) {
+                dataMap.put("ACTIVITY", credentials.getActivity());
+                dataMap.put("MINIMUM_WAGE", credentials.getMinimumWage());
+            }
+            else if (userDao.isStaff(role))
+                dataMap.put("ROLE", credentials.getRole());
+            userDao.updateUser(role, conditionMap, dataMap);
+
+            return ResponseBuilder.createResponse(Response.Status.OK, "User profile updated successfully!");
+        } catch (SQLException | NumberFormatException e) {
             return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
@@ -282,11 +395,11 @@ public class UserResource {
                 userList = userDao.findUsersByRole(role);
             else
                 return ResponseBuilder.createResponse(Response.Status.BAD_REQUEST, "Invalid role: " + role);
+
+            return ResponseBuilder.createResponse(Response.Status.OK, userList);
         } catch (SQLException e) {
             return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
-        return ResponseBuilder.createResponse(Response.Status.OK, userList);
     }
 
 }

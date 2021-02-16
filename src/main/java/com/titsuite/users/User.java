@@ -16,7 +16,7 @@ public class User implements JsonSerializable {
     protected String phoneNumber;
     protected Date birthDate;
     protected String city;
-    protected String street;
+    protected String address;
     protected String refreshToken;
     protected String verificationCode;
     protected int isActive;
@@ -25,7 +25,7 @@ public class User implements JsonSerializable {
     public User() {}
 
     public User(long id, String email, String hashedPassword, String firstName, String lastName,
-        String phoneNumber, Date birthDate, String city, String street, String refreshToken,
+        String phoneNumber, Date birthDate, String city, String address, String refreshToken,
         String verificationCode, int isActive, Date resendTimeout) {
         this.setId(id);
         this.setEmail(email);
@@ -35,7 +35,7 @@ public class User implements JsonSerializable {
         this.setPhoneNumber(phoneNumber);
         this.setBirthDate(birthDate);
         this.setCity(city);
-        this.setStreet(street);
+        this.setAddress(address);
         this.setRefreshToken(refreshToken);
         this.setVerificationCode(verificationCode);
         this.setIsActive(isActive);
@@ -92,9 +92,9 @@ public class User implements JsonSerializable {
 
     public void setCity(String city) { this.city = city; }
 
-    public String getStreet() { return this.street; }
+    public String getAddress() { return this.address; }
 
-    public void setStreet(String street) { this.street = street; }
+    public void setAddress(String address) { this.address = address; }
 
     public String getRefreshToken() { return this.refreshToken; }
 
@@ -123,8 +123,9 @@ public class User implements JsonSerializable {
         jsonObject.put("firstName", getFirstName());
         jsonObject.put("lastName", getLastName());
         jsonObject.put("phoneNumber", getPhoneNumber());
+        jsonObject.put("birthDate", getBirthDate().getTime());
         jsonObject.put("city", getCity());
-        jsonObject.put("street", getStreet());
+        jsonObject.put("address", getAddress());
         return jsonObject;
     }
 

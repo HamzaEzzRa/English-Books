@@ -35,19 +35,19 @@ public class UserDAO {
         if (isCustomer(role)) {
             tableName = "CUSTOMER";
             insertQuery = "INSERT INTO CUSTOMER (EMAIL, HASHED_PASSWORD, FIRST_NAME, LAST_NAME, " +
-                "PHONE_NUMBER, BIRTH_DATE, CITY, STREET, SUBSCRIPTION, REFRESH_TOKEN, VERIFICATION_CODE, IS_ACTIVE)"
+                "PHONE_NUMBER, BIRTH_DATE, CITY, ADDRESS, SUBSCRIPTION, REFRESH_TOKEN, VERIFICATION_CODE, IS_ACTIVE)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         else if (isFreelancer(role)) {
             tableName = "FREELANCER";
             insertQuery = "INSERT INTO FREELANCER (EMAIL, HASHED_PASSWORD, FIRST_NAME, LAST_NAME, " +
-                "PHONE_NUMBER, BIRTH_DATE, CITY, STREET, ACTIVITY, MINIMUM_WAGE, REFRESH_TOKEN, VERIFICATION_CODE,"
+                "PHONE_NUMBER, BIRTH_DATE, CITY, ADDRESS, ACTIVITY, MINIMUM_WAGE, REFRESH_TOKEN, VERIFICATION_CODE,"
                 + " IS_ACTIVE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         else if (isStaff(role)) {
             tableName = "STAFF";
             insertQuery = "INSERT INTO STAFF (EMAIL, HASHED_PASSWORD, FIRST_NAME, LAST_NAME, " +
-                "PHONE_NUMBER, BIRTH_DATE, CITY, STREET, ROLE, REFRESH_TOKEN, VERIFICATION_CODE, IS_ACTIVE) VALUES"
+                "PHONE_NUMBER, BIRTH_DATE, CITY, ADDRESS, ROLE, REFRESH_TOKEN, VERIFICATION_CODE, IS_ACTIVE) VALUES"
                 + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
 
@@ -69,7 +69,7 @@ public class UserDAO {
         insertStatement.setString(5, user.getPhoneNumber());
         insertStatement.setDate(6, DateMapper.javaToSqlDate(user.getBirthDate()));
         insertStatement.setString(7, user.getCity());
-        insertStatement.setString(8, user.getStreet());
+        insertStatement.setString(8, user.getAddress());
 
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof String)
@@ -193,7 +193,7 @@ public class UserDAO {
             Map.Entry<String, ?> entry = it.next();
             updateQueryBuilder.append(entry.getKey()).append(" = ?");
             if (it.hasNext())
-                updateQueryBuilder.append(", ");
+                updateQueryBuilder.append(" AND ");
         }
 
         PreparedStatement updateStatement = connection.prepareStatement(updateQueryBuilder.toString());
@@ -206,6 +206,8 @@ public class UserDAO {
                 updateStatement.setFloat(i, (Float) entry.getValue());
             else if (entry.getValue() instanceof Integer)
                 updateStatement.setInt(i, (Integer) entry.getValue());
+            else if (entry.getValue() instanceof Long)
+                updateStatement.setLong(i, (Long) entry.getValue());
             else if (entry.getValue() instanceof Date)
                 updateStatement.setDate(i, DateMapper.javaToSqlDate((Date) entry.getValue()));
             i++;
@@ -217,6 +219,8 @@ public class UserDAO {
                 updateStatement.setFloat(i, (Float) entry.getValue());
             else if (entry.getValue() instanceof Integer)
                 updateStatement.setInt(i, (Integer) entry.getValue());
+            else if (entry.getValue() instanceof Long)
+                updateStatement.setLong(i, (Long) entry.getValue());
             else if (entry.getValue() instanceof Date)
                 updateStatement.setDate(i, DateMapper.javaToSqlDate((Date) entry.getValue()));
             i++;

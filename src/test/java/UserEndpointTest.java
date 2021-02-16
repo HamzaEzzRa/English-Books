@@ -38,8 +38,11 @@ import static org.junit.Assert.assertNotNull;
 @RunAsClient
 public class UserEndpointTest {
 
-    private static final String TEST_EMAIL = "hamzaezzaouirahali@gmail.com";
+    private static final String TEST_EMAIL = "hamzavitsh@gmail.com";
     private static final String TEST_PASSWORD = "Titsuite123456";
+    private static final String TEST_CITY = "Casablanca";
+    private static final String TEST_ADDRESS = "Sidi Maarouf Lot El Haddioui";
+    private static final String TEST_PHONE_NUMBER = "212679223766";
     private static final String CUSTOMER_ROLE = "customer";
     private static final String FREELANCER_ROLE = "freelancer";
     private static final String STAFF_ROLE = "staff";
@@ -75,9 +78,13 @@ public class UserEndpointTest {
 
     @Test
     public void shouldFailLogin() {
-        AuthCredentials credentials = new AuthCredentials(
-        "dummyEmail@dummyDomain.com", "dummyPassword", CUSTOMER_ROLE
-        );
+        AuthCredentials credentials = new AuthCredentials();
+        credentials.setEmail("dummyEmail@dummyDomain.com");
+        credentials.setPassword("dummyPassword");
+        credentials.setRole(CUSTOMER_ROLE);
+        credentials.setAddress(TEST_ADDRESS);
+        credentials.setCity(TEST_CITY);
+        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
 
         Response response = userTarget.path("/login").request(MediaType.APPLICATION_JSON).post(
             Entity.entity(credentials, MediaType.APPLICATION_JSON)
@@ -89,9 +96,13 @@ public class UserEndpointTest {
     @Test
     @InSequence(1)
     public void shouldCreateCustomer() {
-        AuthCredentials credentials = new AuthCredentials(
-            TEST_EMAIL, TEST_PASSWORD, CUSTOMER_ROLE
-        );
+        AuthCredentials credentials = new AuthCredentials();
+        credentials.setEmail(TEST_EMAIL);
+        credentials.setPassword(TEST_PASSWORD);
+        credentials.setRole(CUSTOMER_ROLE);
+        credentials.setAddress(TEST_ADDRESS);
+        credentials.setCity(TEST_CITY);
+        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
 
         Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
             Entity.entity(credentials, MediaType.APPLICATION_JSON)
@@ -103,9 +114,13 @@ public class UserEndpointTest {
     @Test
     @InSequence(2)
     public void shouldCreateFreelancer() {
-        AuthCredentials credentials = new AuthCredentials(
-            TEST_EMAIL, TEST_PASSWORD, FREELANCER_ROLE
-        );
+        AuthCredentials credentials = new AuthCredentials();
+        credentials.setEmail(TEST_EMAIL);
+        credentials.setPassword(TEST_PASSWORD);
+        credentials.setRole(FREELANCER_ROLE);
+        credentials.setAddress(TEST_ADDRESS);
+        credentials.setCity(TEST_CITY);
+        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
 
         Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
             Entity.entity(credentials, MediaType.APPLICATION_JSON)
@@ -117,9 +132,13 @@ public class UserEndpointTest {
     @Test
     @InSequence(3)
     public void shouldCreateStaff() {
-        AuthCredentials credentials = new AuthCredentials(
-            TEST_EMAIL, TEST_PASSWORD, STAFF_ROLE
-        );
+        AuthCredentials credentials = new AuthCredentials();
+        credentials.setEmail(TEST_EMAIL);
+        credentials.setPassword(TEST_PASSWORD);
+        credentials.setRole(STAFF_ROLE);
+        credentials.setAddress(TEST_ADDRESS);
+        credentials.setCity(TEST_CITY);
+        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
 
         Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
             Entity.entity(credentials, MediaType.APPLICATION_JSON)
@@ -137,9 +156,13 @@ public class UserEndpointTest {
     @Test
     @InSequence(5)
     public void shouldLogin() {
-        AuthCredentials credentials = new AuthCredentials(
-            TEST_EMAIL, TEST_PASSWORD, STAFF_ROLE
-        );
+        AuthCredentials credentials = new AuthCredentials();
+        credentials.setEmail(TEST_EMAIL);
+        credentials.setPassword(TEST_PASSWORD);
+        credentials.setAddress(TEST_ADDRESS);
+        credentials.setCity(TEST_CITY);
+        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
+
 
         Response response = userTarget.path("/login").request(MediaType.APPLICATION_JSON)
             .post(Entity.entity(credentials, MediaType.APPLICATION_JSON));

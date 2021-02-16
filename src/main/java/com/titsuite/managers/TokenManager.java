@@ -27,7 +27,7 @@ public class TokenManager {
     private static RsaJsonWebKey rsaJsonAuthKey = null;
     private static RsaJsonWebKey rsaJsonRefreshKey = null;
     private static final String issuer = "titsuite.com";
-    private static final int authTTL = 15; // 15 minutes until authentication token expiration
+    private static final int authTTL = 17; // 17 minutes until authentication token expiration
     private static final int refreshTTL = 10080; // 1 Week == 10080 Minutes
 
     static {
@@ -105,18 +105,10 @@ public class TokenManager {
             .build();
 
         JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
-        System.out.println("JWT validation succeeded : " + jwtClaims);
 
         return jwtClaims.getClaimsMap();
     }
 
-  /*public static int getIdUser(String token) throws InvalidJwtException{  //gets the user ID from the JWT ! To be reviewed..
-        Map<String, Object> userToken=validateJWT(token);
-        int id= (int) userToken.get("id");
-
-        return id;
-    }*/
-
-
+    public static int getAuthTTL() { return authTTL; }
 
 }

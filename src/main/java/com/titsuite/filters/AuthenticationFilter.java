@@ -16,6 +16,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
@@ -33,9 +34,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     public static final String HEADER_PROPERTY_ID = "id";
     public static final String HEADER_PROPERTY_ROLE = "role";
-    public static final String AUTHORIZATION_PROPERTY = "Authorization";
+    public static final String AUTHORIZATION_PROPERTY = "token";
 
-    private static final String ACCESS_INVALID_TOKEN = "Token invalid. Please authenticate again!";
+    private static final String ACCESS_INVALID_TOKEN = "Token is invalid. Please authenticate again!";
     private static final String ACCESS_DENIED = "Not allowed to access this resource!";
     private static final String ACCESS_FORBIDDEN = "Access forbidden!";
 
@@ -45,29 +46,35 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         if (!method.isAnnotationPresent(PermitAll.class)) {
             if (method.isAnnotationPresent(DenyAll.class)) {
                 requestContext.abortWith(
-                        ResponseBuilder.createResponse(Response.Status.FORBIDDEN, ACCESS_FORBIDDEN)
+                    ResponseBuilder.createResponse(Response.Status.FORBIDDEN, ACCESS_FORBIDDEN)
                 );
                 return;
             }
 
-            final MultivaluedMap<String, String> headers = requestContext.getHeaders();
-            final List<String> authProperty = headers.get(AUTHORIZATION_PROPERTY);
+            Cookie cookie = null;
+            for (Cookie c : requestContext.getCookies().values())
+            {
+                if (c.getName().equals(AUTHORIZATION_PROPERTY)) {
+                    cookie = c;
+                    break;
+                }
+            }
 
-            if (authProperty == null || authProperty.isEmpty()) {
+            if (cookie == null || cookie.getValue().isEmpty()) {
                 logger.warn("No token has been provided!");
                 requestContext.abortWith(
-                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                    ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
                 return;
             }
 
             String id;
             String role;
-            String jwt = authProperty.get(0);
+            String jwt = cookie.getValue();
 
             try {
                 Map<String, Object> jwtMap = TokenManager.validateJWT(jwt,
-                        TokenManager.KeySelection.AUTHENTICATION_KEY);
+                    TokenManager.KeySelection.AUTHENTICATION_KEY);
                 id = (String) jwtMap.get("id");
                 role = (String) jwtMap.get("role");
             } catch (InvalidJwtException e) {
@@ -87,7 +94,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 else {
                     logger.warn("Invalid token provided!");
                     requestContext.abortWith(
-                            ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
+                            ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN + " here")
                     );
                 }
             } catch (SQLException e) {
@@ -98,7 +105,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             }
 
             if (user == null) {
-                logger.warn("Invalid Token!");
+                logger.warn("Invalid token provided!");
                 requestContext.abortWith(
                         ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_INVALID_TOKEN)
                 );
@@ -118,6 +125,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 }
             }
 
+            final MultivaluedMap<String, String> headers = requestContext.getHeaders();
             headers.put(HEADER_PROPERTY_ID, Collections.singletonList(id));
             headers.put(HEADER_PROPERTY_ROLE, Collections.singletonList(role));
         }
