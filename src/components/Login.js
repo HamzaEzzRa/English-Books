@@ -2,14 +2,17 @@ import './Login.css'
 import logo from './images/logo.svg'
 import pict from './images/login_pict.svg'
 import {React, Component} from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter} from 'react-router-dom';
 import LandingPage from './LandingPage';
 class Login extends Component {
-    state = {
-        email: '',
-        password: '',
-        role: ''
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            password: '',
+            role: ''
+        };
+    }
 
     handleChange = (event) => {
         this.setState(
@@ -28,6 +31,7 @@ class Login extends Component {
             role: this.state.role
         };
 
+        
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -36,7 +40,8 @@ class Login extends Component {
         fetch('/Titsuite-1.0-SNAPSHOT/api/users/login', requestOptions)
             .then(res => res.json())
             .then((data) => {
-                localStorage.setItem("Authorization", data.Authorization);
+                this.props.rest.authenticate();
+                this.props.history.push('/' + this.state.role + '/profile');
             });
     }
 
@@ -79,7 +84,7 @@ class Login extends Component {
                                     
                                 
                                 <div class="row">
-                                    <div class="col"><Link to="/dashboard"><button type="submit" class="btn btn-primary" id="submitButton">Submit</button></Link></div>
+                                    <div class="col"><button type="submit" class="btn btn-primary" id="submitButton">Submit</button></div>
                                     <div class="col">
                                         <div><span><a href="" class="stretched-link">Forget your Password?</a></span></div>
                                         <div><span><a href="" class="stretched-link">Don’t have an Account?</a></span></div>
@@ -106,4 +111,4 @@ class Login extends Component {
     }
 ;}
 
-export default  Login;
+export default  withRouter(Login);

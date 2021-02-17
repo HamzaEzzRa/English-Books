@@ -9,24 +9,63 @@ import {Route, BrowserRouter as Router, Switch, Link} from "react-router-dom"
 import Landing from './components/Landing';
 import Portfeuille from './components/Portfeuille';
 import MesAnnonces from './components/MesAnnonces';
+import Profile from './components/Profile';
+import { React, Component } from 'react';
+import UnauthGuard from './components/UnauthGuard';
+import AuthGuard from './components/AuthGuard';
 
-function App() {
-  return (
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isAuthenticated: false
+    };
+    const auth = localStorage.getItem("isAuthenticated");
+    if (auth != null)
+      this.state.isAuthenticated = (auth === 'true');
+    else
+      localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+  }
+
+  authenticate = () => {
+    this.setState({
+      isAuthenticated: true
+    });
+    localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+  }
+
+  logout = () => {
+    this.setState({
+      isAuthenticated: false
+    });
+    localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+  }
+
+  render(){
+    return (
     <div className="App">
       
 
       <Router>
         <switch>
           <Route path="/" exact component={LandingPage2}/>
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
+          {/* <Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} /> */}
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/portfeuille" component={Portfeuille} />
-          <Route path="/annonces" component={MesAnnonces}/>
+          {/* <Route path="/annonces" component={MesAnnonces}/>
+          <Route path="/freelancer/profile" component={Profile} /> */}
+
+          <UnauthGuard path="/signup" auth={this.state.isAuthenticated} component={SignUp} />
+          <UnauthGuard path="/login" auth={this.state.isAuthenticated} rest={{authenticate: this.authenticate}} component={Login} />
+          <AuthGuard path="/freelancer/profile" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={Profile} />
+          
+          <AuthGuard path="/annonces" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={MesAnnonces} />
         </switch>
       </Router>
     </div>
   );
+  }
+  
 }
 
-export default App;

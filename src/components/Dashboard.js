@@ -27,18 +27,7 @@ class Dashboard extends Component {
         )}
     }
     componentDidMount() {
-        const token = localStorage.getItem("Authorization");
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json',
-                        'Authorization' : token
-            }
-        };
-        fetch('/Titsuite-1.0-SNAPSHOT/api/users/freelancer/all', requestOptions)
-            .then(res => res.json())
-            .then((data) => {
-                console.log(data)
-            });
+        
     }
 
     render(){
