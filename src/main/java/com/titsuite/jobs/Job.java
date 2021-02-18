@@ -3,55 +3,79 @@ package com.titsuite.jobs;
 import java.util.Date;
 
 public class Job {
-   protected int id;
-   protected int refFreelancer;
 
-   protected int refRate;
-   protected int refOffer;
+   private String city;
+   private int minimumWage;
+   private String period;
+   private String first_name;
+   private String last_name;
+   private int rate;
+   private String review;
 
-
-
-   public Job(int id, int refFreelancer,  int refRate, int refOffer) {
-      this.id = id;
-      this.refFreelancer = refFreelancer;
-
-      this.refRate = refRate;
-      this.refOffer = refOffer;
+   public Job(String city, int minimumWage, String period, String first_name, String last_name, int rate, String review) {
+      this.city = city;
+      this.minimumWage = minimumWage;
+      this.period = period;
+      this.first_name = first_name;
+      this.last_name = last_name;
+      this.rate = rate;
+      this.review = review;
    }
 
-   public int getId() {
-      return id;
+   public String getCity() {
+      return city;
    }
 
-   public int getRefFreelancer() {
-      return refFreelancer;
+   public void setCity(String city) {
+      this.city = city;
    }
 
-
-
-   public int getRefRate() {
-      return refRate;
+   public int getMinimumWage() {
+      return minimumWage;
    }
 
-   public int getRefOffer() {
-      return refOffer;
+   public void setMinimumWage(int minimumWage) {
+      this.minimumWage = minimumWage;
    }
 
-   public void setId(int id) {
-      this.id = id;
+   public String getPeriod() {
+      return period;
    }
 
-   public void setRefFreelancer(int refFreelancer) {
-      this.refFreelancer = refFreelancer;
+   public void setPeriod(String period) {
+      this.period = period;
    }
 
-
-
-   public void setRefRate(int refRate) {
-      this.refRate = refRate;
+   public String getFirst_name() {
+      return first_name;
    }
 
-   public void setRefOffer(int refOffer) {
-      this.refOffer = refOffer;
+   public void setFirst_name(String first_name) {
+      this.first_name = first_name;
+   }
+
+   public String getLast_name() {
+      return last_name;
+   }
+
+   public void setLast_name(String last_name) {
+      this.last_name = last_name;
+   }
+
+   public int getRate() {
+      return rate;
+   }
+
+   public void setRate(int rate) {
+      this.rate = rate;
+   }
+
+   public String getReview() {
+      return review;
+   }
+
+   public void setReview(String review) {
+      this.review = review;
    }
 }
+
