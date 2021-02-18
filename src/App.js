@@ -13,6 +13,8 @@ import Profile from './components/Profile';
 import { React, Component } from 'react';
 import UnauthGuard from './components/UnauthGuard';
 import AuthGuard from './components/AuthGuard';
+import CustomerProfile from './components/CustomerProfile'
+import CustomerDashboard from './components/CustomerDashboard';
 
 export default class App extends Component {
   constructor() {
@@ -52,13 +54,16 @@ export default class App extends Component {
           {/* <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} /> */}
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/customer/dashboard" component={CustomerDashboard} />
           <Route path="/portfeuille" component={Portfeuille} />
+          {/* <Route path="/customer/historique" component={Portfeuille} /> */}
           {/* <Route path="/annonces" component={MesAnnonces}/>
           <Route path="/freelancer/profile" component={Profile} /> */}
 
           <UnauthGuard path="/signup" auth={this.state.isAuthenticated} component={SignUp} />
           <UnauthGuard path="/login" auth={this.state.isAuthenticated} rest={{authenticate: this.authenticate}} component={Login} />
           <AuthGuard path="/freelancer/profile" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={Profile} />
+          <AuthGuard path="/customer/profile" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={CustomerProfile} />
           
           <AuthGuard path="/annonces" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={MesAnnonces} />
         </switch>

@@ -41,8 +41,12 @@ class Login extends Component {
             .then(res => res.json())
             .then((data) => {
                 this.props.rest.authenticate();
+                let value = this.state.role;
+                localStorage.setItem('role', value);
                 this.props.history.push('/' + this.state.role + '/profile');
             });
+        
+        
     }
 
     render(){
@@ -54,7 +58,7 @@ class Login extends Component {
                         <img src={logo} class="img-fluid" alt="Logo" />
 
                         <div class="LoginContent">
-                            <p> <span>Login to
+                            <p > <span><b>Login </b>
                                 <br/>Access your Account</span></p>
                         </div>
                         <div class="LoginForm">
@@ -80,6 +84,7 @@ class Login extends Component {
                                     <label class="form-check-label" for="exampleRadios2">
                                         I'm a FreeLancer
                                     </label>
+                                    <br/>
                                 </div>
                                     
                                 
