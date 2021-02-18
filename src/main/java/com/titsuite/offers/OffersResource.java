@@ -155,14 +155,16 @@ public class OffersResource {
 
     @POST
     @Path("/update")
-    @PermitAll
+    @RolesAllowed("freelancer")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateOfferStatus(offerResponse responseToOffer) {
+    public Response updateOfferStatus(offerResponse responseToOffer, @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) String id) {
 
         String response = responseToOffer.getResponse();//to be : traité from the frontend
         int offerID = responseToOffer.getID();
 
+        System.out.println(response + " ...................................");
+        int ID = Integer.parseInt(id);
         try {
             connection = ConnectionFactory.getConnection();
             PreparedStatement updateStat = connection.prepareStatement("UPDATE OFFERS SET STATUS=(?) where ID=(?)");
@@ -173,7 +175,7 @@ public class OffersResource {
             if(response.equalsIgnoreCase("prise en charge")){
                 PreparedStatement addJob = connection.prepareStatement("INSERT INTO JOB(REFFREELANCER,REFRATE,REFOFFER) VALUES(?,?,?)");
 
-                addJob.setInt(1, 3445);
+                addJob.setInt(1, ID);
                 addJob.setInt(2, 1);
                 addJob.setInt(3, offerID);
                 addJob.executeQuery();
@@ -191,10 +193,10 @@ public class OffersResource {
 
 
     @GET
-    @PermitAll //freelancers are the only ones to be allowed...
+    @RolesAllowed({"freelancer"})//freelancers are the only ones to be allowed...
     @Path("/available")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Offer> getAvailableOffersByActivity(/*@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) String id*/) {
+    public List<Offer> getAvailableOffersByActivity(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) String id) {
         Statement statement = null;
         Statement getFreelancerActivityStatement = null;
         ResultSet resultSet = null;
@@ -204,13 +206,13 @@ public class OffersResource {
         ArrayList<Offer> allOffers = new ArrayList<Offer>();
         //step2 create  the connection object
 
-
+        int ID =  Integer.parseInt(id);
         try{
             connection=ConnectionFactory.getConnection();
 
             getFreelancerActivityStatement=connection.createStatement();
 
-            freelancerResult=getFreelancerActivityStatement.executeQuery("SELECT ACTIVITY FROM FREELANCER WHERE ID=3445");
+            freelancerResult=getFreelancerActivityStatement.executeQuery("SELECT ACTIVITY FROM FREELANCER WHERE ID="+ID);
 
             while (freelancerResult.next()) {
                activity=freelancerResult.getString(1);
@@ -232,8 +234,6 @@ public class OffersResource {
             statement = connection.createStatement();
 
 
-
-
             System.out.println("jjjjjjjj"+ activity);
           resultSet = statement.executeQuery("SELECT * FROM OFFERS WHERE STATUS='en attente' AND ACTIVITY='"+activity+"'");
 
@@ -244,7 +244,6 @@ public class OffersResource {
 
 
             }
-
 
             statement.close();
             connection.close();
