@@ -5,16 +5,16 @@ import java.util.Date;
 public class Job {
    protected int id;
    protected int refFreelancer;
-   protected Date period;
+
    protected int refRate;
    protected int refOffer;
 
 
 
-   public Job(int id, int refFreelancer, Date period, int refRate, int refOffer) {
+   public Job(int id, int refFreelancer,  int refRate, int refOffer) {
       this.id = id;
       this.refFreelancer = refFreelancer;
-      this.period = period;
+
       this.refRate = refRate;
       this.refOffer = refOffer;
    }
@@ -27,9 +27,7 @@ public class Job {
       return refFreelancer;
    }
 
-   public Date getPeriod() {
-      return period;
-   }
+
 
    public int getRefRate() {
       return refRate;
@@ -47,9 +45,7 @@ public class Job {
       this.refFreelancer = refFreelancer;
    }
 
-   public void setPeriod(Date period) {
-      this.period = period;
-   }
+
 
    public void setRefRate(int refRate) {
       this.refRate = refRate;

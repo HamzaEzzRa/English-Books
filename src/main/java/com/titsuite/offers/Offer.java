@@ -9,7 +9,7 @@ public class Offer{
     private String city;
     private int minimumWage;
 
-    private static String status="PRIVATE";
+    private static String status="en attente";
     private String refCustomer;
     private  String  startDay;
     private String activity;

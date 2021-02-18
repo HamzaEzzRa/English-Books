@@ -1,27 +1,34 @@
 package com.titsuite.jobs;
 
 
+import com.titsuite.filters.AuthenticationFilter;
+
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @DeclareRoles({ "customer", "freelancer", "staff" })
-@Path("/jobs")
+@Path("/myjobs")
 public class JobsResource {
 
 
-    @POST
+    @GET
     @Path("/all")
-    @PermitAll
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllJobs(){
 
-        return Response.status(200).entity("success").build();
+   @RolesAllowed("freelancer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Job> getAllJobs( @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) String id ){  //needs to return details about the offer, name of customer, date, description
+        ArrayList<Job> myjobs=new ArrayList<Job>();
+
+
+
+
+        return myjobs;
     }
 }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-    private static final String url = "jdbc:oracle:thin:@//localhost:1521/ORCLCDB";
+    private static final String url = "jdbc:oracle:thin:@localhost:1521:ORCLCDB";
     private static final String username = "Prince";
     private static final String password = "Prince";
 

@@ -6,5 +6,6 @@ create table offers(
     status varchar(10),
     refCustomer int  NOT NULL,
     startDay DATE,
+    activity varchar(50),
     FOREIGN KEY(refCustomer) REFERENCES CUSTOMER(ID)
 );

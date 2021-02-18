@@ -1,4 +1,4 @@
-import com.titsuite.app.ServerApplication;
+/*import com.titsuite.app.ServerApplication;
 import com.titsuite.dao.ConnectionFactory;
 import com.titsuite.dao.UserDAO;
 import com.titsuite.exceptions.UserExistsException;
@@ -191,3 +191,4 @@ public class UserEndpointTest {
     }
 
 }
+*/
