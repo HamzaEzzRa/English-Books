@@ -7,30 +7,62 @@ import { Line } from 'react-chartjs-2';
 import {React, Component} from 'react';
 
 class Dashboard extends Component {
-
-    elements = [1, 2, 3, 4, 5, 6];
-    items = [];
-
-    renderItems = ()=> {
-        for( let [index, value] of this.elements.entries()){
-        this.items.push(
-            <tr>
-                <th scope="row">Test</th>
-                <td>test@gmail.com</td>
-                <td>14h30</td>
-                <td>+2126 45 65 76 89</td>
-                <td>Agdal, Rabat</td>
-                <td> <button type="button" class="btn btn-primary">Accept</button> 
-                <button type="button" class="btn btn-danger">Refuser</button>
-                </td>  
-            </tr>
-        )}
+    state = {
+        items : []
     }
+    
     componentDidMount() {
-        
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/offers/available', requestOptions).then(res => res.json()).then((data) => {
+            console.log(data);
+            this.setState(
+                {items : data}
+            )
+        });
+    }
+
+    acceptOffer(event, id){
+        event.preventDefault();
+
+        const resp = {
+            id : id,
+            response: "prise en charge"
+        };
+
+        console.log(resp);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resp)
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/offers/update', requestOptions)
+            .then(res => res.json())
+            .then((data) => {
+                console.log(data);
+            }
+        );
     }
 
     render(){
+        const offers = ()=>{
+            return this.state.items.map((item) => {
+                return (<tr>
+                    <th scope="row">{item.id}</th>
+                    <td>{item.description}</td>
+                    <td>{item.activity}</td>
+                    <td>{item.city}</td>
+                    <td>{item.minimumWage}</td>
+                    <td>{item.startDay}</td>
+                    <td> <button type="button" class="btn btn-primary" onClick={(e) => {this.acceptOffer(e, item.id)} }>Accept</button>
+                </td> 
+                </tr>
+                )
+            })
+        }
         return (
         <div>
             <div class="row">
@@ -74,17 +106,17 @@ class Dashboard extends Component {
                         <table class="table">
                             <thead>
                                 <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Heure</th>
-                                <th scope="col">Numero de telephone</th>
-                                <th scope="col">Quartier</th>
+                                <th scope="col">ID </th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Activity</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Minimum Wage</th>
+                                <th scope="col">Start Date</th>
                                 <th scope="col">Accepter / Refuser</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.renderItems()}
-                                {this.items}
+                                {offers()}
                             </tbody>
                             </table>
                     </div>

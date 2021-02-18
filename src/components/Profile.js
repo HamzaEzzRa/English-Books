@@ -323,6 +323,34 @@ class Profile extends Component{
                         </div>
                     </div>
                     
+                    <div className="row Content PersonalDetails">
+                        <div class="col">
+                            <h3 className="freelancerProfile">Add new Diploma</h3>
+                            <button type="submit" className="btn btn-primary floatRight">Add</button>
+                        </div>
+                        <hr /> 
+
+                    </div>    
+                                      
+                    <div className="row Content PersonalDetails"> 
+                        <div className="col">
+                                <label>Name</label>
+                            <input name="name"   class="form-control" required />
+                        </div>
+                        <hr />
+                    </div>    
+                                    
+                    <div className="row Content PersonalDetails">
+                        <div className="col-6">
+                            <label>Acquisition Date</label>
+                            <input name="date" type="date"   class="form-control" required />
+                        </div>
+                        <div className="col-6">
+                            <label>Field</label>
+                            <input name="field"   class="form-control" required />
+                        </div>
+                    </div>
+                    
                 </div>
         </div>
     }
