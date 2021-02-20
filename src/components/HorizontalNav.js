@@ -3,10 +3,29 @@ import logo from "./images/logo.svg"
 import './horizontalNav.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquare, faHome } from '@fortawesome/free-solid-svg-icons'
-import { Link } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
+import { React, Component } from "react"
 
-function HorizontalNav(){
-    return(
+class HorizontalNav extends Component{
+
+    
+
+    handleLogout = (event) => {
+        event.preventDefault();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/users/logout', requestOptions).then(res => res.json()).then((data) => {
+            console.log(data);
+            this.props.rest.logout();
+            this.props.history.push('/login');
+        });
+    }
+
+    render(){
+        return(
         <div>
             <ul class="nav flex-column Nav">
                         <li>
@@ -35,12 +54,19 @@ function HorizontalNav(){
                              : <a class="nav-link" href="#"><Link to="/customer/profile" >Profile</Link></a>}
                             
                         </li>
-                        <li class="nav-item BottomNav">
-                            <a class="nav-link" href="#">Hamid Aarif</a>
-                        </li>
+                        <div class="BottomNav">
+                            <li class="nav-item ">
+                                <a class="nav-link" href="#">Hamid Aarif</a>
+                            </li>
+                            <li class="nav-item ">
+                                <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
+                            </li>
+                        </div>
                     </ul>
         </div>
     )
+    }
+    
 }
 
-export  default HorizontalNav;
+export default withRouter(HorizontalNav)

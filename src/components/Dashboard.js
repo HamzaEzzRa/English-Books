@@ -118,7 +118,7 @@ class Dashboard extends Component {
                             <tbody>
                                 {offers()}
                             </tbody>
-                            </table>
+                        </table>
                     </div>
                 </div>
             </div>

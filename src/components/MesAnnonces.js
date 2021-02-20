@@ -1,47 +1,72 @@
+import { React, Component } from "react";
+import { withRouter } from "react-router-dom";
 import HorizontalNav from "./HorizontalNav";
 import cardTest from './images/cardTest.svg'
 import "./mesAnnonces.css"
 
-function MesAnnonces() {
-    const elements = ['one', 'two', 'three', 'for', 'five', 'six', 'seven'];
-    const items = []
+class MesAnnonces extends Component {
 
-    for (const [index, value] of elements.entries()) {
-        items.push(<div class="col-3">
-                        <div class="card" style={{width : "14em;"}}>
-                            <img src={cardTest} class="img-fluid" alt="Logo" />
-                            <div class="card-body">
-                                <h5 class="card-title">Job Title</h5>
-                                <span>City <br /></span>
-                                <span id="date">For 12/4/2021</span> <span id="price">400 DH</span>
-                            </div>
+    state = {
+        items : [],
+        size : 0
+    }
+    
+    componentDidMount() {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/offers', requestOptions)
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data);
+            this.setState(
+                {
+                    items : data,
+                    size : data.length
+                }
+            )
+        });
+    }
+
+    render(){
+        const offers = ()=>{
+            return this.state.items.map((item) => {
+                return (
+                    <div class="card col-3">
+                        <img class="card-img-top" src={cardTest} alt="Card image cap" />
+                        <div class="card-body">
+                            <h5 class="card-title">{item.description}</h5>
+                            <p class="card-text">{item.city} / {item.startDay} / {item.minimumWage}</p>
                         </div>
                     </div>
                 )
-    }
-    return (
-        <div>
-            <div class="row">
-                <div class="col-2">
-                    <HorizontalNav />
-                </div>
-                <div class="col Content">
-                    <div class="row">
-                        <div class="col filterRow">
-                            <span id="nbOfServices">382 services available</span>
-                            <span id="recent"> Recent</span>
+            })
+        }
+        return (
+            <div>
+                <div class="row">
+                    <div class="col-2">
+                        <HorizontalNav />
+                    </div>
+                    <div class="col Content">
+                        <div class="row">
+                            <div class="col filterRow">
+                                <span id="nbOfServices">{this.state.size} services available</span>
+                                <span id="recent"> Recent</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            {offers()}   
                         </div>
                     </div>
-
-                    <div class="row">
-                        {items}   
-                    </div>
                 </div>
+                
             </div>
-            
-        </div>
+            )
+    };
+    
+}
 
-        
-    );}
-
-export default  MesAnnonces;
+export default  withRouter(MesAnnonces) ;
