@@ -16,6 +16,11 @@ class Profile extends Component{
         activity: '',
         minimumWage: '',
         diplomas: [],
+        newDiploma: {
+            name: '',
+            acquisitionDate: Date.now(),
+            field: ''
+        }
     }
 
     handleProfileUpdate = (event) => {
@@ -50,14 +55,7 @@ class Profile extends Component{
     handleDiplomaUpdate = (event, index) => {
         event.preventDefault();
 
-        const diplomas = [...this.state.diplomas];
-        let diploma = null;
-        for (let i = 0; i < diplomas.length; i++) {
-            if (diplomas[i].id === index) {
-                diploma = diplomas[i];
-                break;
-            }
-        }
+        const diploma = this.state.diplomas[index];
 
         console.log(diploma);
 
@@ -82,49 +80,85 @@ class Profile extends Component{
         )
     }
 
-    handleDiplomaName = (event, index) => {
-        let moddedDiplomas = [...this.state.diplomas];
-        for (let i = 0; i < moddedDiplomas.length; i++) {
-            if (moddedDiplomas[i].id === index) {
-                moddedDiplomas[i].name = event.target.value;
-                break;
-            }
-        }
+    handleDiplomaChange = (event, index) => {
         this.setState(
             {
-                diplomas: moddedDiplomas
+                diplomas: [
+                    ...this.state.diplomas.slice(0, index),
+                    {
+                        ...this.state.diplomas[index],
+                        [event.target.name]: event.target.value
+                    },
+                    ...this.state.diplomas.slice(index + 1)
+                ]
             }
         );
     }
 
-    handleDiplomaDate = (event, index) => {
-        let moddedDiplomas = [...this.state.diplomas];
-        for (let i = 0; i < moddedDiplomas.length; i++) {
-            if (moddedDiplomas[i].id === index) {
-                moddedDiplomas[i].acquisitionDate = event.target.value;
-                break;
+    handleNewDiplomaChange = (event) => {
+        this.setState({
+            newDiploma: {
+                ...this.state.newDiploma,
+                [event.target.name]: event.target.value
             }
-        }
-        this.setState(
-            {
-                diplomas: moddedDiplomas
+        })
+    }
+
+    handleAddDiploma = (event) => {
+        event.preventDefault();
+        
+        const newDiploma = {...this.state.newDiploma}
+
+        console.log(newDiploma);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newDiploma)
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/diplomas/create', requestOptions)
+            .then(res => res.json())
+            .then((data) => {
+                console.log(data);
+                newDiploma.id = data.id;
+                this.setState(
+                    {
+                        diplomas: [
+                            ...this.state.diplomas,
+                            newDiploma
+                        ],
+                        newDiploma: {
+                            name: '',
+                            acquisitionDate: new Date(),
+                            field: ''
+                        }
+                    }
+                )
             }
         );
     }
 
-    handleDiplomaField = (event, index) => {
-        let moddedDiplomas = [...this.state.diplomas];
-        for (let i = 0; i < moddedDiplomas.length; i++) {
-            if (moddedDiplomas[i].id === index) {
-                moddedDiplomas[i].field = event.target.value;
-                break;
-            }
-        }
-        this.setState(
-            {
-                diplomas: moddedDiplomas
-            }
-        );
+    handleDiplomaDelete = (event, index) => {
+        event.preventDefault();
+
+        const diploma = this.state.diplomas[index];
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: diploma.id })
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/diplomas/delete', requestOptions)
+            .then(res => res.json())
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    diplomas: [
+                        ...this.state.diplomas.slice(0, index),
+                        ...this.state.diplomas.slice(index + 1)
+                    ]
+                })
+            });
     }
 
     handleLogout = (event) => {
@@ -181,12 +215,11 @@ class Profile extends Component{
         });
     }
 
-
     render(){
         const diplomaList = () => {
-            return this.state.diplomas.map((diploma) => {
+            return this.state.diplomas.map((diploma, index) => {
                 return (
-                    <form onSubmit={(e) => {this.handleDiplomaUpdate(e, diploma.id)}} key={diploma.id}>
+                    <form onSubmit={(e) => {this.handleDiplomaUpdate(e, index)}} key={index}>
                         <div className="">
                             <div className=" ">
                                 <div className="">
@@ -194,24 +227,25 @@ class Profile extends Component{
                                         <div class="col">
                                             <h3 className="freelancerProfile">Diploma</h3>
                                             <button type="submit" className="btn btn-primary floatRight">Save</button>
+                                            <button type="button" className="btn btn-danger floatRight" onClick={(e) => {this.handleDiplomaDelete(e, index)}}>Delete</button>
                                         </div>
                                     </div>    
                                     <hr />   
                                     <div className="row"> 
                                         <div className="col">
                                             <label>Name</label>
-                                            <input name="name" value={diploma.name} onChange={(e) => {this.handleDiplomaName(e, diploma.id)}} class="form-control" required />
+                                            <input name="name" value={diploma.name} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
                                         </div>
                                     </div>    
                                     <hr />
                                     <div className="row">
                                         <div className="col-6">
                                             <label>Acquisition Date</label>
-                                            <input name="date" type="date" value={this.formatDate(diploma.acquisitionDate)} onChange={(e) => {this.handleDiplomaDate(e, diploma.id)}} class="form-control" required />
+                                            <input name="date" type="date" value={this.formatDate(diploma.acquisitionDate)} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
                                         </div>
                                         <div className="col-6">
                                             <label>Field</label>
-                                            <input name="field" value={diploma.field} onChange={(e) => {this.handleDiplomaField(e, diploma.id)}} class="form-control" required />
+                                            <input name="field" value={diploma.field} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
                                         </div>
                                     </div>
                                     <hr />
@@ -225,7 +259,7 @@ class Profile extends Component{
 
         return <div class="row">
                 <div class="col-2">
-                    <HorizontalNav />
+                    <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
                 <div class="col Content ">
                     <div class="row ">
@@ -326,7 +360,7 @@ class Profile extends Component{
                     <div className="row Content PersonalDetails">
                         <div class="col">
                             <h3 className="freelancerProfile">Add new Diploma</h3>
-                            <button type="submit" className="btn btn-primary floatRight">Add</button>
+                            <button type="button" className="btn btn-primary floatRight" onClick={this.handleAddDiploma}>Add</button>
                         </div>
                         <hr /> 
 
@@ -335,7 +369,7 @@ class Profile extends Component{
                     <div className="row Content PersonalDetails"> 
                         <div className="col">
                                 <label>Name</label>
-                            <input name="name"   class="form-control" required />
+                            <input name="name"   class="form-control" value={this.state.newDiploma.name} onChange={this.handleNewDiplomaChange} required />
                         </div>
                         <hr />
                     </div>    
@@ -343,11 +377,11 @@ class Profile extends Component{
                     <div className="row Content PersonalDetails">
                         <div className="col-6">
                             <label>Acquisition Date</label>
-                            <input name="date" type="date"   class="form-control" required />
+                            <input name="aquisitionDate" type="date"   class="form-control" value={this.formatDate(this.state.newDiploma.acquisitionDate)} onChange={this.handleNewDiplomaChange} required />
                         </div>
                         <div className="col-6">
                             <label>Field</label>
-                            <input name="field"   class="form-control" required />
+                            <input name="field"   class="form-control" value={this.state.newDiploma.field} onChange={this.handleNewDiplomaChange} required />
                         </div>
                     </div>
                     

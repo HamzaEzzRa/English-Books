@@ -47,7 +47,7 @@ class MesAnnonces extends Component {
             <div>
                 <div class="row">
                     <div class="col-2">
-                        <HorizontalNav />
+                        <HorizontalNav logout={this.props.rest.logout}/>
                     </div>
                     <div class="col Content">
                         <div class="row">

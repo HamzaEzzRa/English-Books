@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import CustomerNavbar from "./CustomerNavbar";
 import HorizontalNav from "./HorizontalNav";
 import './customerDashboard.css'
+import Select from "react-select"
 
 class CustomerDashboard extends Component{
 
@@ -12,15 +13,20 @@ class CustomerDashboard extends Component{
         city : "",
         activity : "",
         minimumWage : "",
-        startDay : ""
+        startDay : "",
+        options : [
+        { value: 'Plomberie', label: 'Plomberie' }
+      ]
     }
+
+    
 
     componentDidMount() {
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         };
-        fetch('/Titsuite-1.0-SNAPSHOT/api/offers/available', requestOptions).then(res => res.json()).then((data) => {
+        fetch('/Titsuite-1.0-SNAPSHOT/api/offers/myoffers', requestOptions).then(res => res.json()).then((data) => {
             console.log(data);
             this.setState(
                 {items : data}
@@ -28,8 +34,7 @@ class CustomerDashboard extends Component{
         });
     }
 
-    handleOffer = (event) => {
-        event.preventDefault();
+    handleOffer = () => {
 
         const offer = {
             description: this.state.description,
@@ -46,7 +51,7 @@ class CustomerDashboard extends Component{
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(offer)
         };
-        fetch('/Titsuite-1.0-SNAPSHOT/api/offers', requestOptions)
+        fetch('/Titsuite-1.0-SNAPSHOT/api/offers/new', requestOptions)
             .then(res => res.json())
             .then((data) => {
                 console.log(data);
@@ -54,16 +59,40 @@ class CustomerDashboard extends Component{
         );
     }
 
+    handleOfferChange = (event) => {
+        this.setState(
+            {
+                [event.target.name]: event.target.value
+            }
+        )
+    }
+
     render(){
+        const offers = ()=>{
+            return this.state.items.map((item) => {
+                return (<tr>
+                    <th scope="row">{item.id}</th>
+                    <td>{item.description}</td>
+                    <td>{item.activity}</td>
+                    <td>{item.city}</td>
+                    <td>{item.minimumWage}</td>
+                    <td>{item.startDay}</td>
+                    <td>{item.status}</td> 
+                </tr>
+                )
+            })
+        }
         return <div class="row">
             <div class="col-2">
-                    <HorizontalNav />
+                    <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
             <div class="col Content">
+            
+                
                 <div class="row">
                     <div class="col">
                         <h5 class="floatLeft">Add new Offer</h5>
-                        <button type="button" class="btn btn-primary floatRight">Add</button>
+                        <button type="button" class="btn btn-primary floatRight" onClick={()=>this.handleOffer()}>Add</button>
                     </div>
                 </div>
                 <div class="row">
@@ -72,32 +101,35 @@ class CustomerDashboard extends Component{
                             <div class="col">
                                 <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="description" onChange={this.handleOfferChange}></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <label for="exampleFormControlTextarea1">City</label>
-                                <input class="form-control" type="text" placeholder="Default input"/>
+                                <input class="form-control" type="text" placeholder="Default input" name="city" onChange={this.handleOfferChange}/>
                             </div>
                             <div class="col-6">
                                 <label for="exampleFormControlTextarea1">Start Day</label>
-                                <input class="form-control" type="date" />
+                                <input class="form-control" type="date" onChange={this.handleOfferChange} name="startDay"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Activity</label>
-                                    <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Plomberie</option>
+                                    <select class="form-control" id="activity" onChange={this.handleOfferChange} name="activity" value={this.state.activity}>
+                                    <option></option>
+                                    <option value="Plomberie" >Plomberie</option>
+                                    <option value="DEveloper" >Developer</option>
                                     </select>
+                                    
                                 </div>
                             </div>
                             <div class="col-6">
                                 <label for="exampleFormControlTextarea1">Min Wage</label>
-                                <input class="form-control" type="number" />
+                                <input class="form-control" type="number" onChange={this.handleOfferChange} name="minimumWage"/>
                             </div>
                         </div>
                     </div>
@@ -118,7 +150,7 @@ class CustomerDashboard extends Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                {}
+                                {offers()}
                             </tbody>
                         </table>
                     </div>

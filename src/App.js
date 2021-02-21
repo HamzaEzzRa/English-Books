@@ -15,32 +15,82 @@ import UnauthGuard from './components/UnauthGuard';
 import AuthGuard from './components/AuthGuard';
 import CustomerProfile from './components/CustomerProfile'
 import CustomerDashboard from './components/CustomerDashboard';
+import CustomerHistorique from './components/CustomerHistorique';
 
 export default class App extends Component {
+  expiresIn = 900 * 1000;
+  
   constructor() {
     super();
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
     };
-    const auth = localStorage.getItem("isAuthenticated");
+    const auth = localStorage.getItem("isAuthCheck");
     if (auth != null)
-      this.state.isAuthenticated = (auth === 'true');
-    else
-      localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+      this.state.isAuthenticated = true;
   }
+
+  componentDidMount() {
+    this.setAutoLoginInterval();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.callTimeout);
+    clearInterval(this.refreshTimer);
+  }
+
+  refreshTimer = null;
+  callTimeout = null;
 
   authenticate = () => {
     this.setState({
       isAuthenticated: true
     });
-    localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+    localStorage.setItem("isAuthCheck", "");
+    localStorage.setItem("expiryTime", Date.now() + this.expiresIn);
+    this.setAutoLoginInterval();
   }
 
   logout = () => {
     this.setState({
       isAuthenticated: false
     });
-    localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
+    clearTimeout(this.callTimeout);
+    clearInterval(this.refreshTimer);
+    localStorage.removeItem("isAuthCheck");
+    localStorage.removeItem("expiryTime");
+  }
+
+  autoLoginCallback = (key) => {
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch('/Titsuite-1.0-SNAPSHOT/api/users/refreshToken', requestOptions).then(res => res.json()).then((data) => {
+      console.log(data);
+      localStorage.setItem(key, Date.now() + this.expiresIn);
+    });
+  }
+
+  setAutoLoginInterval = () => {
+    const key = 'expiryTime';
+    const now = Date.now();
+    const expiryTime = localStorage.getItem(key);
+    const executeCallback = () => {
+      this.autoLoginCallback(key);
+    };
+    if (expiryTime != null) { // User is logged in
+      if (now >= expiryTime) { // User has been away longer than expiryTime, log him out
+        localStorage.removeItem(key);
+        this.logout();
+      }
+      else { // Execute callback when we reach the next interval
+        this.callTimeout = setTimeout(() => {
+          this.refreshTimer = setInterval(executeCallback, this.expiresIn);
+          executeCallback();
+        }, expiryTime - now);
+      }
+    }
   }
 
   render(){
@@ -53,10 +103,10 @@ export default class App extends Component {
           <Route path="/" exact component={LandingPage2}/>
           {/* <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} /> */}
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/customer/dashboard" component={CustomerDashboard} />
-          <Route path="/portfeuille" component={Portfeuille} />
-          {/* <Route path="/customer/historique" component={Portfeuille} /> */}
+          <AuthGuard path="/dashboard" auth={this.state.isAuthenticated}  rest={{logout: this.logout}} component={Dashboard} />
+          <AuthGuard path="/customer/dashboard" auth={this.state.isAuthenticated}  rest={{logout: this.logout}} component={CustomerDashboard} />
+          <AuthGuard path="/portfeuille" auth={this.state.isAuthenticated}  rest={{logout: this.logout}} component={Portfeuille} />
+          <AuthGuard path="/customer/historique" auth={this.state.isAuthenticated}  rest={{logout: this.logout}} component={CustomerHistorique} /> 
           {/* <Route path="/annonces" component={MesAnnonces}/>
           <Route path="/freelancer/profile" component={Profile} /> */}
 

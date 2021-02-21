@@ -1,39 +1,56 @@
+import { render } from "@testing-library/react";
+import { React, Component } from "react";
+import { withRouter } from "react-router-dom";
 import HorizontalNav from "./HorizontalNav";
 import './portfeuille.css'
 
-function Portfeuille() {
-    const elements = ['one', 'two', 'three', 'for']
-    const items = []
-
-    for(const [index, value] of elements.entries()){
-            items.push(
-                <div class="serviceItem">
-                    Saturday February 20th <br /> 
-                    Repairing the kitchen’s roof <br />
-                    14:00 
-                </div>
-            )
+export default class Portfeuille extends Component {
+    state ={
+        items : []
     }
 
-    // const [toggleState, setToggleState] = useState(1);
+    componentDidMount() {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/Titsuite-1.0-SNAPSHOT/api/myjobs/all', requestOptions).then(res => res.json()).then((data) => {
+            console.log(data);
+            this.setState(
+                {items : data}
+            )
+        });
+    }
+    
+    render(){
 
-    // const toggleTab = (index) => {
-    //     setToggleState(index);
-    // };
-
-    return (
+        const offers = ()=>{
+            return this.state.items.map((item) => {
+                return (<div class="serviceItem">
+                    {item.id} -- 
+                    {item.description} -- 
+                    {item.activity} -- 
+                    {item.city} -- 
+                    {item.minimumWage} --
+                    {item.startDay} --
+                    
+                </div>
+                )
+            })
+        }
+        return (
         <div>
             <div class="row">
                 <div class="col-2">
-                    <HorizontalNav />
+                    <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
                 <div class="col Content">
                     <div class="row">
                         <div class="col-6">
                             <div class="Header"><b>My Services</b></div>
                             <hr />
-                            <div class="">
-                                    {items}
+                            <div >
+                                    {offers()}
                             </div>
                         </div>
                         <div class="col">
@@ -58,6 +75,8 @@ function Portfeuille() {
             
         </div>
         
-    );}
+    )
+    }
+    ;}
 
-export default  Portfeuille;
+// export default  Portfeuille ;

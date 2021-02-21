@@ -8,8 +8,6 @@ import { React, Component } from "react"
 
 class HorizontalNav extends Component{
 
-    
-
     handleLogout = (event) => {
         event.preventDefault();
 
@@ -19,9 +17,10 @@ class HorizontalNav extends Component{
         };
         fetch('/Titsuite-1.0-SNAPSHOT/api/users/logout', requestOptions).then(res => res.json()).then((data) => {
             console.log(data);
-            this.props.rest.logout();
-            this.props.history.push('/login');
+            this.props.logout(); // This is the problem.
+            this.props.history.push('/login'); // This one too
         });
+
     }
 
     render(){
@@ -45,7 +44,7 @@ class HorizontalNav extends Component{
                         <li class="nav-item">
                         {(localStorage.getItem('role') === 'freelancer') ? 
                              <a class="nav-link" href="#"><Link to="/portfeuille" >Portfeuille</Link></a>
-                             : <a class="nav-link active" href="#"><Link to="#" >Historique</Link></a>}
+                             : <a class="nav-link active" href="#"><Link to="/customer/historique" >Historique</Link></a>}
                             
                         </li>
                         <li class="nav-item">
