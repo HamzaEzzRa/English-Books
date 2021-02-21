@@ -42,7 +42,7 @@ public class Customer extends User {
 
     public void setSubscription(String subscription) {
         for (String sub : subscriptions) {
-            if (subscription.equals(sub)) {
+            if (subscription!=null && subscription.equals(sub)) {
                 this.subscription = subscription;
                 return;
             }
