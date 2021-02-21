@@ -1,6 +1,7 @@
 package com.titsuite.app;
 
 import com.titsuite.diplomas.DiplomaResource;
+import com.titsuite.jobs.JobsResource;
 import com.titsuite.offers.OffersResource;
 import com.titsuite.filters.AuthenticationFilter;
 import com.titsuite.utils.DebugMapper;
@@ -17,7 +18,7 @@ public class ServerApplication extends Application {
     public Set<Class<?>> getClasses() {
         return new HashSet<Class<?>>(Arrays.asList(
             AuthenticationFilter.class, DebugMapper.class, UserResource.class, DiplomaResource.class,
-            OffersResource.class
+            OffersResource.class, JobsResource.class
         ));
     }
 }
