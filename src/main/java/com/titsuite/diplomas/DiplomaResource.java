@@ -30,9 +30,11 @@ public class DiplomaResource {
 
         try {
             diploma.setFreelancerRef(Long.parseLong(id));
-            diplomaDao.createDiploma(diploma);
+            Long generatedId = diplomaDao.createDiploma(diploma);
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("id", generatedId);
 
-            return ResponseBuilder.createResponse(Response.Status.CREATED, "Diploma added successfully!");
+            return ResponseBuilder.createResponse(Response.Status.CREATED, responseMap);
         } catch (SQLException | NumberFormatException e) {
             return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -94,7 +96,7 @@ public class DiplomaResource {
         try {
             diplomaDao.removeDiplomaById(diploma.getId(), Long.parseLong(refId));
 
-            return ResponseBuilder.createResponse(Response.Status.OK, "Diploma updated successfully!");
+            return ResponseBuilder.createResponse(Response.Status.OK, "Diploma deleted successfully!");
         } catch (DiplomaNotFoundException e) {
             return ResponseBuilder.createResponse(Response.Status.BAD_REQUEST, e.getMessage());
         } catch (UnauthorizedDiplomaChange e) {

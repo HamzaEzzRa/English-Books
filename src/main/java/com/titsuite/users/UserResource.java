@@ -71,7 +71,7 @@ public class UserResource {
 
                 Properties properties = new Properties();
                 try {
-                    properties.load(TokenManager.class.getClassLoader().getResourceAsStream("config.properties"));
+                    properties.load(UserResource.class.getClassLoader().getResourceAsStream("config.properties"));
                     Mailer.sendGmail(properties.getProperty("mailUsername"), properties.getProperty("mailPassword"),
                         credentials.getEmail(), "Account Verification", body);
                 } catch (MessagingException | IOException e) {
@@ -284,8 +284,8 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) final String id,
         @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ROLE) final String role) {
-        NewCookie authCookie = new NewCookie(AuthenticationFilter.AUTHORIZATION_PROPERTY, "", null,
-        null, null,0, false, true);
+        NewCookie authCookie = new NewCookie(AuthenticationFilter.AUTHORIZATION_PROPERTY, "", "/",
+        "", null,0, false, true);
 
         new Thread(() -> {
             UserDAO userDao = new UserDAO();
@@ -320,7 +320,8 @@ public class UserResource {
             responseMap.put("firstName", foundUser.getFirstName());
             responseMap.put("lastName", foundUser.getLastName());
             responseMap.put("phoneNumber", foundUser.getPhoneNumber());
-            responseMap.put("birthDate", foundUser.getBirthDate().getTime());
+            if (foundUser.getBirthDate() != null)
+                responseMap.put("birthDate", foundUser.getBirthDate().getTime());
             responseMap.put("city", foundUser.getCity());
             responseMap.put("address", foundUser.getAddress());
 
@@ -361,8 +362,7 @@ public class UserResource {
             dataMap.put("FIRST_NAME", credentials.getFirstName());
             dataMap.put("LAST_NAME", credentials.getLastName());
             dataMap.put("PHONE_NUMBER", credentials.getPhoneNumber());
-            dataMap.put("BIRTH_DATE", credentials.getBirthDate() == null ?
-                new GregorianCalendar(1, Calendar.JANUARY, 1).getTime() : credentials.getBirthDate());
+            dataMap.put("BIRTH_DATE", credentials.getBirthDate());
             dataMap.put("CITY", credentials.getCity());
             dataMap.put("ADDRESS", credentials.getAddress());
 

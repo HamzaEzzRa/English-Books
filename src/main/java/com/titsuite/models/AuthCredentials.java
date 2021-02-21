@@ -38,7 +38,11 @@ public class AuthCredentials {
 
     public String getEmail() { return this.email; }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        if (email != null)
+            email = email.toLowerCase();
+        this.email = email;
+    }
 
     public String getPassword() { return password; }
 

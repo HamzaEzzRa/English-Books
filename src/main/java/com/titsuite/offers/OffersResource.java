@@ -1,6 +1,5 @@
 package com.titsuite.offers;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.titsuite.dao.ConnectionFactory;
 import com.titsuite.filters.AuthenticationFilter;
 import com.titsuite.managers.TokenManager;

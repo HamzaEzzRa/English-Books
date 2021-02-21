@@ -5,11 +5,9 @@ import com.titsuite.diplomas.Diploma;
 import com.titsuite.exceptions.UnauthorizedDiplomaChange;
 import com.titsuite.utils.DateMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class DiplomaDAO {
 
@@ -57,19 +55,22 @@ public class DiplomaDAO {
         return diplomaList;
     }
 
-    public void createDiploma(Diploma diploma) throws SQLException {
+    public long createDiploma(Diploma diploma) throws SQLException {
         Connection connection = ConnectionFactory.getConnection();
-        String insertQuery = "INSERT INTO DIPLOMA (NAME, ACQUISITION_DATE, FIELD, FREELANCER_REF) VALUES (?, ?, ?, ?)";
+        String insertQuery = "BEGIN INSERT INTO DIPLOMA (NAME, ACQUISITION_DATE, FIELD, FREELANCER_REF) VALUES (?, ?, ?, ?) RETURNING id INTO ?; END;";
 
-        PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+        CallableStatement insertStatement = connection.prepareCall(insertQuery);
         insertStatement.setString(1, diploma.getName());
         insertStatement.setDate(2, DateMapper.javaToSqlDate(diploma.getAcquisitionDate()));
         insertStatement.setString(3, diploma.getField());
         insertStatement.setLong(4, diploma.getFreelancerRef());
+        insertStatement.registerOutParameter(5, Types.NUMERIC);
 
         insertStatement.executeUpdate();
-
+        long generatedId = insertStatement.getLong(5);
         connection.close();
+
+        return generatedId;
     }
 
     public void updateDiploma(Map<String, ?> conditionMap, Map<String, ?> dataMap) throws DiplomaNotFoundException,

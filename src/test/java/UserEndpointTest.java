@@ -1,14 +1,10 @@
-/*import com.titsuite.app.ServerApplication;
-import com.titsuite.dao.ConnectionFactory;
-import com.titsuite.dao.UserDAO;
-import com.titsuite.exceptions.UserExistsException;
-import com.titsuite.exceptions.UserNotFoundException;
+import com.titsuite.diplomas.Diploma;
 import com.titsuite.filters.AuthenticationFilter;
-import com.titsuite.managers.PasswordManager;
-import com.titsuite.managers.TokenManager;
 import com.titsuite.models.AuthCredentials;
-import com.titsuite.users.*;
-import com.titsuite.utils.*;
+import com.titsuite.utils.RandomStringGenerator;
+
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -17,6 +13,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +22,17 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+
 import java.io.File;
+
 import java.net.URI;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -38,53 +41,44 @@ import static org.junit.Assert.assertNotNull;
 @RunAsClient
 public class UserEndpointTest {
 
-    private static final String TEST_EMAIL = "hamzavitsh@gmail.com";
-    private static final String TEST_PASSWORD = "Titsuite123456";
-    private static final String TEST_CITY = "Casablanca";
-    private static final String TEST_ADDRESS = "Sidi Maarouf Lot El Haddioui";
-    private static final String TEST_PHONE_NUMBER = "212679223766";
-    private static final String CUSTOMER_ROLE = "customer";
-    private static final String FREELANCER_ROLE = "freelancer";
-    private static final String STAFF_ROLE = "staff";
-
     private WebTarget userTarget;
-    private String jsonWebToken;
+    private WebTarget diplomaTarget;
+    private static NewCookie tokenCookie;
+    private static Long newDiplomaId;
 
     @ArquillianResource
     private URI baseURL;
 
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
-
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
-            .importRuntimeDependencies().resolve().withTransitivity().asFile();
+            .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class)
-            .addClasses(User.class, Customer.class, Freelancer.class, Staff.class, UserResource.class)
-            .addClasses(Mailer.class, RandomStringGenerator.class, ResponseBuilder.class, DateMapper.class)
-            .addClasses(UserDAO.class, ConnectionFactory.class, PasswordManager.class, TokenManager.class)
-            .addClasses(JsonSerializable.class, DebugMapper.class, AuthCredentials.class, AuthenticationFilter.class)
-            .addClasses(ServerApplication.class, UserExistsException.class, UserNotFoundException.class)
-            //.addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
-            //.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addPackages(true, "com.titsuite")
+            .addAsResource("config.properties")
             .addAsLibraries(files);
     }
 
     @Before
     public void initWebTarget() {
-        Client client = ClientBuilder.newClient();
+        ClientConfig clientConfig = new ClientConfig();
+        clientConfig.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
+        Client client = ClientBuilder.newClient(clientConfig);
         userTarget = client.target(baseURL).path("api/users");
+        diplomaTarget = client.target(baseURL).path("api/diplomas");
     }
 
     @Test
+    @InSequence(1)
     public void shouldFailLogin() {
         AuthCredentials credentials = new AuthCredentials();
         credentials.setEmail("dummyEmail@dummyDomain.com");
         credentials.setPassword("dummyPassword");
-        credentials.setRole(CUSTOMER_ROLE);
-        credentials.setAddress(TEST_ADDRESS);
-        credentials.setCity(TEST_CITY);
-        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
+        credentials.setRole(UserCreationTest.CUSTOMER_ROLE);
+        credentials.setAddress(UserCreationTest.TEST_ADDRESS);
+        credentials.setCity(UserCreationTest.TEST_CITY);
+        credentials.setPhoneNumber(UserCreationTest.TEST_PHONE_NUMBER);
 
         Response response = userTarget.path("/login").request(MediaType.APPLICATION_JSON).post(
             Entity.entity(credentials, MediaType.APPLICATION_JSON)
@@ -94,101 +88,126 @@ public class UserEndpointTest {
     }
 
     @Test
-    @InSequence(1)
-    public void shouldCreateCustomer() {
-        AuthCredentials credentials = new AuthCredentials();
-        credentials.setEmail(TEST_EMAIL);
-        credentials.setPassword(TEST_PASSWORD);
-        credentials.setRole(CUSTOMER_ROLE);
-        credentials.setAddress(TEST_ADDRESS);
-        credentials.setCity(TEST_CITY);
-        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
-
-        Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
-            Entity.entity(credentials, MediaType.APPLICATION_JSON)
-        );
-
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
     @InSequence(2)
-    public void shouldCreateFreelancer() {
-        AuthCredentials credentials = new AuthCredentials();
-        credentials.setEmail(TEST_EMAIL);
-        credentials.setPassword(TEST_PASSWORD);
-        credentials.setRole(FREELANCER_ROLE);
-        credentials.setAddress(TEST_ADDRESS);
-        credentials.setCity(TEST_CITY);
-        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
-
-        Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
-            Entity.entity(credentials, MediaType.APPLICATION_JSON)
-        );
-
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
-    @InSequence(3)
-    public void shouldCreateStaff() {
-        AuthCredentials credentials = new AuthCredentials();
-        credentials.setEmail(TEST_EMAIL);
-        credentials.setPassword(TEST_PASSWORD);
-        credentials.setRole(STAFF_ROLE);
-        credentials.setAddress(TEST_ADDRESS);
-        credentials.setCity(TEST_CITY);
-        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
-
-        Response response = userTarget.path("/register").request(MediaType.APPLICATION_JSON).post(
-            Entity.entity(credentials, MediaType.APPLICATION_JSON)
-        );
-
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
-    @InSequence(4)
-    public void shouldActivateAccount() {
-
-    }
-
-    @Test
-    @InSequence(5)
     public void shouldLogin() {
         AuthCredentials credentials = new AuthCredentials();
-        credentials.setEmail(TEST_EMAIL);
-        credentials.setPassword(TEST_PASSWORD);
-        credentials.setAddress(TEST_ADDRESS);
-        credentials.setCity(TEST_CITY);
-        credentials.setPhoneNumber(TEST_PHONE_NUMBER);
-
+        credentials.setEmail(UserCreationTest.TEST_EMAIL);
+        credentials.setPassword(UserCreationTest.TEST_PASSWORD);
+        credentials.setRole(UserCreationTest.FREELANCER_ROLE);
 
         Response response = userTarget.path("/login").request(MediaType.APPLICATION_JSON)
             .post(Entity.entity(credentials, MediaType.APPLICATION_JSON));
 
         assertEquals(202, response.getStatus());
-        assertNotNull(response.getHeaderString(HttpHeaders.AUTHORIZATION));
-        jsonWebToken = response.getHeaderString(HttpHeaders.AUTHORIZATION);
+        tokenCookie = response.getCookies().get(AuthenticationFilter.AUTHORIZATION_PROPERTY);
+        assertNotNull(tokenCookie);
+    }
+
+    @Test
+    @InSequence(3)
+    public void shouldCreateDiploma() {
+        RandomStringGenerator rsg = new RandomStringGenerator(10);
+        Diploma newDiploma = new Diploma();
+        newDiploma.setName(rsg.nextString());
+        newDiploma.setAcquisitionDate(new Date());
+        newDiploma.setField(rsg.nextString());
+
+        Response response = diplomaTarget.path("/create").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).post(Entity.entity(newDiploma, MediaType.APPLICATION_JSON_TYPE));
+
+        assertEquals(201, response.getStatus());
+        newDiplomaId = Long.parseLong(response.readEntity(String.class).split(":|}")[1]);
+    }
+
+    @Test
+    @InSequence(4)
+    public void shouldGetProfile() {
+        Response response = userTarget.path("/profile").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).get();
+
+        assertEquals(200, response.getStatus());
+        String userProfile = response.readEntity(String.class);
+        System.out.println(userProfile);
+    }
+
+    @Test
+    @InSequence(5)
+    public void shouldUpdateProfile() {
+        AuthCredentials updatedCredentials = new AuthCredentials();
+        RandomStringGenerator rsg = new RandomStringGenerator(15);
+        updatedCredentials.setFirstName(rsg.nextString());
+        updatedCredentials.setLastName(rsg.nextString());
+        updatedCredentials.setBirthDate(new Date(new GregorianCalendar(1999, Calendar.AUGUST, 2)
+            .getTimeInMillis()));
+        updatedCredentials.setPhoneNumber(rsg.nextString());
+        updatedCredentials.setActivity(rsg.nextString());
+        updatedCredentials.setMinimumWage(150f);
+
+        Response response = userTarget.path("/profile/update").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).post(Entity.entity(updatedCredentials, MediaType.APPLICATION_JSON_TYPE));
+
+        assertEquals(200, response.getStatus());
     }
 
     @Test
     @InSequence(6)
-    public void shouldGetAllCustomers() {
+    public void shouldUpdateDiploma() {
+        RandomStringGenerator rsg = new RandomStringGenerator(10);
+        Diploma newDiploma = new Diploma();
+        newDiploma.setId(newDiplomaId);
+        newDiploma.setName(rsg.nextString());
+        newDiploma.setAcquisitionDate(new Date());
+        newDiploma.setField(rsg.nextString());
 
+        Response response = diplomaTarget.path("/update").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).post(Entity.entity(newDiploma, MediaType.APPLICATION_JSON_TYPE));
+
+        assertEquals(200, response.getStatus());
     }
 
     @Test
     @InSequence(7)
-    public void shouldGetAllFreelancers() {
+    public void shouldGetUpdatedProfile() {
+        Response response = userTarget.path("/profile").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).get();
 
+        assertEquals(200, response.getStatus());
+        String userProfile = response.readEntity(String.class);
+        System.out.println(userProfile);
     }
 
     @Test
     @InSequence(8)
-    public void shouldGetAllStaff() {
+    public void shouldDeleteDiploma() {
+        Diploma newDiploma = new Diploma();
+        newDiploma.setId(newDiplomaId);
 
+        Response response = diplomaTarget.path("/delete").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).build("DELETE", Entity.entity(newDiploma, MediaType.APPLICATION_JSON_TYPE))
+            .invoke();
+
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    @InSequence(9)
+    public void shouldGetDeletedDiplomaProfile() {
+        Response response = userTarget.path("/profile").request(MediaType.APPLICATION_JSON)
+                .cookie(tokenCookie).get();
+
+        assertEquals(200, response.getStatus());
+        String userProfile = response.readEntity(String.class);
+        System.out.println(userProfile);
+    }
+
+    @Test
+    @InSequence(10)
+    public void shouldLogout() {
+        Response response = userTarget.path("/logout").request(MediaType.APPLICATION_JSON)
+            .cookie(tokenCookie).post(null);
+
+        assertEquals(200, response.getStatus());
+        tokenCookie = response.getCookies().get(AuthenticationFilter.AUTHORIZATION_PROPERTY);
     }
 
 }
-*/

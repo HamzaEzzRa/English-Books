@@ -53,6 +53,8 @@ public class User implements JsonSerializable {
     }
 
     public void setEmail(String email) {
+        if (email != null)
+            email = email.toLowerCase();
         this.email = email;
     }
 
