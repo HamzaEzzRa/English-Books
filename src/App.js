@@ -16,6 +16,7 @@ import AuthGuard from './components/AuthGuard';
 import CustomerProfile from './components/CustomerProfile'
 import CustomerDashboard from './components/CustomerDashboard';
 import CustomerHistorique from './components/CustomerHistorique';
+import ServiceClient from './components/ServiceClient';
 
 export default class App extends Component {
   expiresIn = 900 * 1000;
@@ -57,8 +58,7 @@ export default class App extends Component {
     });
     clearTimeout(this.callTimeout);
     clearInterval(this.refreshTimer);
-    localStorage.removeItem("isAuthCheck");
-    localStorage.removeItem("expiryTime");
+    localStorage.clear();
   }
 
   autoLoginCallback = (key) => {
@@ -99,7 +99,7 @@ export default class App extends Component {
       
 
       <Router>
-        <switch>
+        <Switch>
           <Route path="/" exact component={LandingPage2}/>
           {/* <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} /> */}
@@ -116,7 +116,8 @@ export default class App extends Component {
           <AuthGuard path="/customer/profile" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={CustomerProfile} />
           
           <AuthGuard path="/annonces" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={MesAnnonces} />
-        </switch>
+          <AuthGuard path="/service-client" auth={this.state.isAuthenticated} rest={{logout: this.logout}} component={ServiceClient} />
+        </Switch>
       </Router>
     </div>
   );

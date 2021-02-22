@@ -26,7 +26,7 @@ export default class Portfeuille extends Component {
 
         const offers = ()=>{
             return this.state.items.map((item) => {
-                return (<div class="serviceItem">
+                return (<div className="serviceItem">
                     {item.id} -- 
                     {item.description} -- 
                     {item.activity} -- 
@@ -40,29 +40,29 @@ export default class Portfeuille extends Component {
         }
         return (
         <div>
-            <div class="row">
-                <div class="col-2">
+            <div className="row">
+                <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-                <div class="col Content">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="Header"><b>My Services</b></div>
+                <div className="col Content">
+                    <div className="row">
+                        <div className="col-6">
+                            <div className="Header"><b>My Services</b></div>
                             <hr />
                             <div >
                                     {offers()}
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="Header">
+                        <div className="col">
+                            <div className="Header">
                                 <b>Saturday, February 20th</b>
                                 <hr />
                             </div>
 
-                            <div class="row">
-                                <div class="col">
-                                    <div class="leftFloat"><b>Soufiane Hajazi</b></div>
-                                    <div class="rightFloat"><button type="button" class="btn ">Edit</button></div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="leftFloat"><b>Soufiane Hajazi</b></div>
+                                    <div className="rightFloat"><button type="button" className="btn ">Edit</button></div>
                                 </div>
                                 
                             </div>

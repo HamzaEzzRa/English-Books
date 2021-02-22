@@ -51,62 +51,62 @@ class Login extends Component {
 
     render(){
         return (
-        <div class="Login">
-           <div class="container">
-                <div class="row">
-                    <div class="col FormDiv">
-                        <img src={logo} class="img-fluid" alt="Logo" />
+        <div className="Login">
+           <div className="container">
+                <div className="row">
+                    <div className="col FormDiv">
+                        <img src={logo} className="img-fluid" alt="Logo" />
 
-                        <div class="LoginContent">
+                        <div className="LoginContent">
                             <p > <span><b>Login </b>
                                 <br/>Access your Account</span></p>
                         </div>
-                        <div class="LoginForm">
+                        <div className="LoginForm">
                             <form onSubmit={this.handleSubmit}>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email" onChange={this.handleChange} required/>
-                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputEmail1">Email address</label>
+                                    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email" onChange={this.handleChange} required/>
+                                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" onChange={this.handleChange} required/>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputPassword1">Password</label>
+                                    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name="password" onChange={this.handleChange} required autoComplete="true" />
                                 </div>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" id="exampleRadios1" value="customer" onChange={this.handleChange} checked={this.state.role === "customer"} />
-                                    <label class="form-check-label" for="exampleRadios1">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="role" id="exampleRadios1" value="customer" onChange={this.handleChange} checked={this.state.role === "customer"} />
+                                    <label className="form-check-label" htmlFor="exampleRadios1">
                                         I'm a Client
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="freelancer" onChange={this.handleChange} checked={this.state.role === "freelancer"}/>
-                                    <label class="form-check-label" for="exampleRadios2">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="role" id="exampleRadios2" value="freelancer" onChange={this.handleChange} checked={this.state.role === "freelancer"}/>
+                                    <label className="form-check-label" htmlFor="exampleRadios2">
                                         I'm a FreeLancer
                                     </label>
                                     <br/>
                                 </div>
                                     
                                 
-                                <div class="row">
-                                    <div class="col"><button type="submit" class="btn btn-primary" id="submitButton">Submit</button></div>
-                                    <div class="col">
-                                        <div><span><a href="" class="stretched-link">Forget your Password?</a></span></div>
-                                        <div><span><a href="" class="stretched-link">Don’t have an Account?</a></span></div>
+                                <div className="row">
+                                    <div className="col"><button type="submit" className="btn btn-primary" id="submitButton">Submit</button></div>
+                                    <div className="col">
+                                        <div><span><a href="" className="stretched-link">Forget your Password?</a></span></div>
+                                        <div><span><a href="" className="stretched-link">Don’t have an Account?</a></span></div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         
                     </div>
-                    <div class="col illustration">
+                    <div className="col illustration">
                         <center>
                             <h3>Tous nos services au bout du doigt</h3>
                             <p>Laissez-nous gérer ce qui vous prend du temps et concentrez-vous sur l’essentiel !</p>
                         </center>
                         
 
-                        <img src={pict} class="img-fluid" alt="Logo" />
+                        <img src={pict} className="img-fluid" alt="Logo" />
                     </div>
                 </div>
             </div>

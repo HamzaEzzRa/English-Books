@@ -46,68 +46,68 @@ class SignUp extends Component {
 
     render(){
         return (
-        <div class="Login">
-           <div class="container">
+        <div className="Login">
+           <div className="container">
 
-                <div class="row">
-                    <div class="col illustration2">
+                <div className="row">
+                    <div className="col illustration2">
                         <h2><center>Tous nos services au bout du doigt</center></h2>
-                        <img src={signUp} class="img-fluid" alt="Logo" /> 
+                        <img src={signUp} className="img-fluid" alt="Logo" /> 
                     </div>
-                    <div class="col SignupForm">
+                    <div className="col SignupForm">
                         <h3> <center>Complete the form below</center></h3>
                         <form onSubmit={this.handleSubmit}>
-                            <div class="form-group">
+                            <div className="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email" onChange={this.handleChange} required/>
+                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email" onChange={this.handleChange} required/>
                         
                             </div>
-                            <div class="form-group">
+                            <div className="form-group">
                                 <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1"  name="password" placeholder="Password" onChange={this.handleChange} required/>
+                                <input type="password" className="form-control" id="exampleInputPassword1"  name="password" placeholder="Password" onChange={this.handleChange} required/>
                             </div>
-                            <div class="form-group">
+                            <div className="form-group">
                                 <label for="exampleInputPassword1">Repeat your Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Repeat your Password" />
+                                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Repeat your Password" />
                             </div>
 
-                            <div class="form-group">
+                            <div className="form-group">
                                 <label for="exampleInputEmail1">Address</label>
-                                <input type="texte" class="form-control"   placeholder="Address" name="address" onChange={this.handleChange}/>
+                                <input type="texte" className="form-control"   placeholder="Address" name="address" onChange={this.handleChange}/>
                             </div>
                             
-                            <div class="row">
-                                <div class="col form-group">
+                            <div className="row">
+                                <div className="col form-group">
                                     <label for="exampleInputEmail1">City</label>
-                                    <input class="form-control" type="text" placeholder="City" name="city" onChange={this.handleChange} />
+                                    <input className="form-control" type="text" placeholder="City" name="city" onChange={this.handleChange} />
                                 </div>
-                                <div class="col form-group">
+                                <div className="col form-group">
                                     <label for="exampleInputEmail1">Phone Number</label>
-                                    <input class="form-control" type="text" placeholder="Phone number" name="phoneNumber" onChange={this.handleChange}/>
+                                    <input className="form-control" type="text" placeholder="Phone number" name="phoneNumber" onChange={this.handleChange}/>
                                 </div>
                             </div>
-                            <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" onChange={this.setRole} id="exampleRadios1" value="customer"  onChange={this.handleChange} checked={this.state.role === "customer"}  />
-                                    <label class="form-check-label" for="exampleRadios1">
+                            <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="role" onChange={this.setRole} id="exampleRadios1" value="customer"  onChange={this.handleChange} checked={this.state.role === "customer"}  />
+                                    <label className="form-check-label" for="exampleRadios1">
                                         I’m a client, and I have a job that needs to be done.
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="freelancer" onChange={this.handleChange} checked={this.state.role === "freelancer"} />
-                                    <label class="form-check-label" for="exampleRadios2">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="role" id="exampleRadios2" value="freelancer" onChange={this.handleChange} checked={this.state.role === "freelancer"} />
+                                    <label className="form-check-label" for="exampleRadios2">
                                         I’m a freelancer, and I want to showcase my services.
                                     </label>
                                 </div>
                             <br />
-                            <span class="signupButton"><button type="submit" class="btn btn-primary btn-lg btn-block" >Sign Up</button></span>
+                            <span className="signupButton"><button type="submit" className="btn btn-primary btn-lg btn-block" >Sign Up</button></span>
                         </form>
                     </div>
                     
                 </div>
 
-                <div class="row">
+                <div className="row">
                     
-                    <div class="col">
+                    <div className="col">
                         
                     </div>
                     

@@ -33,11 +33,11 @@ class MesAnnonces extends Component {
         const offers = ()=>{
             return this.state.items.map((item) => {
                 return (
-                    <div class="card col-3">
-                        <img class="card-img-top" src={cardTest} alt="Card image cap" />
-                        <div class="card-body">
-                            <h5 class="card-title">{item.description}</h5>
-                            <p class="card-text">{item.city} / {item.startDay} / {item.minimumWage}</p>
+                    <div className="card col-3">
+                        <img className="card-img-top" src={cardTest} alt="Card image cap" />
+                        <div className="card-body">
+                            <h5 className="card-title">{item.description}</h5>
+                            <p className="card-text">{item.city} / {item.startDay} / {item.minimumWage}</p>
                         </div>
                     </div>
                 )
@@ -45,19 +45,19 @@ class MesAnnonces extends Component {
         }
         return (
             <div>
-                <div class="row">
-                    <div class="col-2">
+                <div className="row">
+                    <div className="col-2">
                         <HorizontalNav logout={this.props.rest.logout}/>
                     </div>
-                    <div class="col Content">
-                        <div class="row">
-                            <div class="col filterRow">
+                    <div className="col Content">
+                        <div className="row">
+                            <div className="col filterRow">
                                 <span id="nbOfServices">{this.state.size} services available</span>
                                 <span id="recent"> Recent</span>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div className="row">
                             {offers()}   
                         </div>
                     </div>

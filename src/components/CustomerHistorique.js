@@ -23,7 +23,7 @@ export default class CustomerHistorique extends Component{
     render(){
         const offers = ()=>{
             return this.state.items.map((item) => {
-                return (<div class="serviceItem">
+                return (<div className="serviceItem">
                     {item.id} -- 
                     {item.description} -- 
                     {item.activity} -- 
@@ -36,11 +36,11 @@ export default class CustomerHistorique extends Component{
             })
         }
         return(
-            <div class="row">
-                <div class="col-2">
+            <div className="row">
+                <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-                <div class="col Content">
+                <div className="col Content">
                    {offers()}
                 </div>
             </div>

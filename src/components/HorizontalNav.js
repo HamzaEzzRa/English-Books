@@ -17,8 +17,8 @@ class HorizontalNav extends Component{
         };
         fetch('/Titsuite-1.0-SNAPSHOT/api/users/logout', requestOptions).then(res => res.json()).then((data) => {
             console.log(data);
-            this.props.logout(); // This is the problem.
-            this.props.history.push('/login'); // This one too
+            this.props.logout();
+            this.props.history.push('/login');
         });
 
     }
@@ -26,38 +26,38 @@ class HorizontalNav extends Component{
     render(){
         return(
         <div>
-            <ul class="nav flex-column Nav">
+            <ul className="nav flex-column Nav">
                         <li>
-                            <img src={logo} class="img-fluid" alt="Logo" />
+                            <img src={logo} className="img-fluid" alt="Logo" />
                         </li>
-                        <li class="nav-item">
+                        <li className="nav-item">
                             {(localStorage.getItem('role') === 'freelancer') ? 
-                            <a class="nav-link active" href="#"><Link to="/dashboard" ><FontAwesomeIcon icon={faSquare} /> Dashboard</Link></a>
-                             : <a class="nav-link active" href="#"><Link to="/customer/dashboard" ><FontAwesomeIcon icon={faHome} /> Dashboard</Link></a>}
+                            <a className="nav-link active" href="#"><Link to="/dashboard" ><FontAwesomeIcon icon={faSquare} /> Dashboard</Link></a>
+                             : <a className="nav-link active" href="#"><Link to="/customer/dashboard" ><FontAwesomeIcon icon={faHome} /> Dashboard</Link></a>}
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><Link to="/annonces" > <FontAwesomeIcon icon={faHome} />Annonces</Link></a>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#"><Link to="/annonces" > <FontAwesomeIcon icon={faHome} />Annonces</Link></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Service Client</a>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#"><Link to="/service-client" >Service Client</Link></a>
                         </li>
-                        <li class="nav-item">
+                        <li className="nav-item">
                         {(localStorage.getItem('role') === 'freelancer') ? 
-                             <a class="nav-link" href="#"><Link to="/portfeuille" >Portfeuille</Link></a>
-                             : <a class="nav-link active" href="#"><Link to="/customer/historique" >Historique</Link></a>}
+                             <a className="nav-link" href="#"><Link to="/portfeuille" >Portfeuille</Link></a>
+                             : <a className="nav-link active" href="#"><Link to="/customer/historique" >Historique</Link></a>}
                             
                         </li>
-                        <li class="nav-item">
+                        <li className="nav-item">
                         {(localStorage.getItem('role') === 'freelancer') ? 
-                            <a class="nav-link" href="#"><Link to="/freelancer/profile" >Profile</Link></a>
-                             : <a class="nav-link" href="#"><Link to="/customer/profile" >Profile</Link></a>}
+                            <a className="nav-link" href="#"><Link to="/freelancer/profile" >Profile</Link></a>
+                             : <a className="nav-link" href="#"><Link to="/customer/profile" >Profile</Link></a>}
                             
                         </li>
-                        <div class="BottomNav">
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#">Hamid Aarif</a>
+                        <div className="BottomNav">
+                            <li className="nav-item ">
+                                <a className="nav-link" href="#">Hamid Aarif</a>
                             </li>
-                            <li class="nav-item ">
+                            <li className="nav-item ">
                                 <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
                             </li>
                         </div>

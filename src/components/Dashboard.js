@@ -57,7 +57,7 @@ class Dashboard extends Component {
                     <td>{item.city}</td>
                     <td>{item.minimumWage}</td>
                     <td>{item.startDay}</td>
-                    <td> <button type="button" class="btn btn-primary" onClick={(e) => {this.acceptOffer(e, item.id)} }>Accept</button>
+                    <td> <button type="button" className="btn btn-primary" onClick={(e) => {this.acceptOffer(e, item.id)} }>Accept</button>
                 </td> 
                 </tr>
                 )
@@ -65,16 +65,16 @@ class Dashboard extends Component {
         }
         return (
         <div>
-            <div class="row">
-                <div class="col-2">
+            <div className="row">
+                <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-                <div class="col Content">
-                    <div class="overview">  Overview </div>
-                    <div class="dashboardHeaer">
-                        <div class="titleDashboard">Revenus journaliers</div>
+                <div className="col Content">
+                    <div className="overview">  Overview </div>
+                    <div className="dashboardHeaer">
+                        <div className="titleDashboard">Revenus journaliers</div>
                     </div>
-                    <div class="chart"><Line 
+                    <div className="chart"><Line 
                         data={{
                         labels: ['Jan', 'Fev', 'Mars', 'Avr', 'May', 'Juin', 'Juillet', 'Aug', 'Oct', 'Sept', 'Nov', 'Dec'],
                         datasets: [
@@ -101,9 +101,9 @@ class Dashboard extends Component {
                     </div>
 
 
-                    <div class="table">
-                        <div class="titleDashboard">Prestations à acceptées</div>
-                        <table class="table">
+                    <div className="table">
+                        <div className="titleDashboard">Prestations à acceptées</div>
+                        <table className="table">
                             <thead>
                                 <tr>
                                 <th scope="col">ID </th>

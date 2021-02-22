@@ -118,17 +118,17 @@ class CustomerProfile extends Component {
         return (
             <div className="container">
 
-                <div class="row">
-                    <div class="col-2">
+                <div className="row">
+                    <div className="col-2">
                         <HorizontalNav logout={this.props.rest.logout}/>
                     </div>
-                    <div class="col">
+                    <div className="col">
 
                     
-                <div class="row ">
-                        <div class="col ProfileHeader">
-                            <h2 class="freelancerProfile">Customer Profile</h2>
-                            <div class="floatRight">
+                <div className="row ">
+                        <div className="col ProfileHeader">
+                            <h2 className="freelancerProfile">Customer Profile</h2>
+                            <div className="floatRight">
                                 <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
                             </div>
                         </div>
@@ -141,13 +141,13 @@ class CustomerProfile extends Component {
                             <form onSubmit={this.handleProfileUpdate}>
                                 <div >
                                         <div className="row">
-                                            <div class="col">
+                                            <div className="col">
                                                 <button type="submit" className="btn btn-danger floatRight">Save</button>
                                                 <h3 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h3>
                                                 <p></p>
                                             </div>
                                         </div>
-                                        {/* <div class="row">
+                                        {/* <div className="row">
                                             <div className="col">
                                                 <label>Email : </label>
                                                 {/* <input name="email" type="email" value= readOnly={true} required /> */}
@@ -155,21 +155,21 @@ class CustomerProfile extends Component {
                                         <hr />
                                         </div> */} 
                                         
-                                        <div class="row">
+                                        <div className="row">
                                             <div className="col-6">
                                                 <label>First Name  </label>
-                                                <input name="firstName" value={this.state.firstName} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="firstName" value={this.state.firstName} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             <div className="col-6">
                                                 <label>Last Name</label>
-                                                <input name="lastName" value={this.state.lastName} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="lastName" value={this.state.lastName} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col">
                                                 <label>Birth Date</label>
-                                                <input name="birthDate" type="date" value={this.formatDate(this.state.birthDate)} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="birthDate" type="date" value={this.formatDate(this.state.birthDate)} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
 
@@ -177,18 +177,18 @@ class CustomerProfile extends Component {
                                         <div className="row">
                                             <div className="col-6">
                                                 <label>Address</label>
-                                                <input name="address" value={this.state.address} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="address" value={this.state.address} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             <div className="col-6">
                                                 <label>City</label>
-                                                <input name="city" value={this.state.city} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="city" value={this.state.city} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col">
                                                 <label>Phone Number</label>
-                                                <input name="phoneNumber" type="tel" value={this.state.phoneNumber} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="phoneNumber" type="tel" value={this.state.phoneNumber} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             
                                         </div>
@@ -196,7 +196,7 @@ class CustomerProfile extends Component {
                                         <div className="row">
                                             <div className="col-6">
                                                 <label>Subscription</label>
-                                                <input name="subscription" value={this.state.subscription} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="subscription" value={this.state.subscription} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                       

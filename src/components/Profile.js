@@ -96,6 +96,7 @@ class Profile extends Component{
     }
 
     handleNewDiplomaChange = (event) => {
+        console.log(event);
         this.setState({
             newDiploma: {
                 ...this.state.newDiploma,
@@ -176,6 +177,9 @@ class Profile extends Component{
     }
 
     formatDate = (date) => {
+        if (date == null || date === '')
+            return '';
+        
         let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -224,7 +228,7 @@ class Profile extends Component{
                             <div className=" ">
                                 <div className="">
                                     <div className="row">
-                                        <div class="col">
+                                        <div className="col">
                                             <h3 className="freelancerProfile">Diploma</h3>
                                             <button type="submit" className="btn btn-primary floatRight">Save</button>
                                             <button type="button" className="btn btn-danger floatRight" onClick={(e) => {this.handleDiplomaDelete(e, index)}}>Delete</button>
@@ -234,18 +238,18 @@ class Profile extends Component{
                                     <div className="row"> 
                                         <div className="col">
                                             <label>Name</label>
-                                            <input name="name" value={diploma.name} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
+                                            <input name="name" value={diploma.name} onChange={(e) => {this.handleDiplomaChange(e, index)}} className="form-control" required />
                                         </div>
                                     </div>    
                                     <hr />
                                     <div className="row">
                                         <div className="col-6">
                                             <label>Acquisition Date</label>
-                                            <input name="date" type="date" value={this.formatDate(diploma.acquisitionDate)} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
+                                            <input name="date" type="date" value={this.formatDate(diploma.acquisitionDate)} onChange={(e) => {this.handleDiplomaChange(e, index)}} className="form-control" required />
                                         </div>
                                         <div className="col-6">
                                             <label>Field</label>
-                                            <input name="field" value={diploma.field} onChange={(e) => {this.handleDiplomaChange(e, index)}} class="form-control" required />
+                                            <input name="field" value={diploma.field} onChange={(e) => {this.handleDiplomaChange(e, index)}} className="form-control" required />
                                         </div>
                                     </div>
                                     <hr />
@@ -257,23 +261,23 @@ class Profile extends Component{
             })
         };
 
-        return <div class="row">
-                <div class="col-2">
+        return <div className="row">
+                <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-                <div class="col Content ">
-                    <div class="row ">
-                        <div class="col ProfileHeader">
-                            <h2 class="freelancerProfile">Freelancer Profile</h2>
-                            <div class="floatRight">
+                <div className="col Content ">
+                    <div className="row ">
+                        <div className="col ProfileHeader">
+                            <h2 className="freelancerProfile">Freelancer Profile</h2>
+                            <div className="floatRight">
                                 <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-4 profileIllustration">
-                            <img src={profilePng} class="img-fluid" alt="Profile" />
+                    <div className="row">
+                        <div className="col-4 profileIllustration">
+                            <img src={profilePng} className="img-fluid" alt="Profile" />
                         </div>
                         <div className="col-7 Content PersonalDetails">
                             
@@ -281,13 +285,13 @@ class Profile extends Component{
                                 <div >
                                     <div >
                                         <div className="row">
-                                            <div class="col">
+                                            <div className="col">
                                                 <button type="submit" className="btn btn-danger floatRight">Save</button>
                                                 <h3 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h3>
                                                 <p></p>
                                             </div>
                                         </div>
-                                        {/* <div class="row">
+                                        {/* <div className="row">
                                             <div className="col">
                                                 <label>Email : </label>
                                                 {/* <input name="email" type="email" value= readOnly={true} required /> */}
@@ -295,21 +299,21 @@ class Profile extends Component{
                                         <hr />
                                         </div> */} 
                                         
-                                        <div class="row">
+                                        <div className="row">
                                             <div className="col-6">
-                                                <label>First Name  </label>
-                                                <input name="firstName" value={this.state.firstName} onChange={this.handleProfileChange} class="form-control" required />
+                                                <label>First Name</label>
+                                                <input name="firstName" value={this.state.firstName} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             <div className="col-6">
                                                 <label>Last Name</label>
-                                                <input name="lastName" value={this.state.lastName} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="lastName" value={this.state.lastName} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col">
                                                 <label>Birth Date</label>
-                                                <input name="birthDate" type="date" value={this.state.birthDate} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="birthDate" type="date" value={this.formatDate(this.state.birthDate)} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
 
@@ -317,18 +321,18 @@ class Profile extends Component{
                                         <div className="row">
                                             <div className="col-6">
                                                 <label>Address</label>
-                                                <input name="address" value={this.state.address} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="address" value={this.state.address} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             <div className="col-6">
                                                 <label>City</label>
-                                                <input name="city" value={this.state.city} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="city" value={this.state.city} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col">
                                                 <label>Phone Number</label>
-                                                <input name="phoneNumber" type="tel" value={this.state.phoneNumber} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="phoneNumber" type="tel" value={this.state.phoneNumber} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             
                                         </div>
@@ -336,11 +340,11 @@ class Profile extends Component{
                                         <div className="row">
                                             <div className="col-6">
                                                 <label>Activity</label>
-                                                <input name="activity" value={this.state.activity} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="activity" value={this.state.activity} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                             <div className="col-6">
                                                 <label>Minimum Wage</label>
-                                                <input name="minimumWage" value={this.state.minimumWage} onChange={this.handleProfileChange} class="form-control" required />
+                                                <input name="minimumWage" value={this.state.minimumWage} onChange={this.handleProfileChange} className="form-control" required />
                                             </div>
                                         </div>
                                         
@@ -350,26 +354,26 @@ class Profile extends Component{
                         </div>
                         
                     </div>
-                    <div class="row">
-                        <div class="col-2"></div>
+                    <div className="row">
+                        <div className="col-2"></div>
                         <div className="col-8 Content PersonalDetails">
                             {diplomaList()}
                         </div>
                     </div>
                     
                     <div className="row Content PersonalDetails">
-                        <div class="col">
+                        <div className="col">
                             <h3 className="freelancerProfile">Add new Diploma</h3>
                             <button type="button" className="btn btn-primary floatRight" onClick={this.handleAddDiploma}>Add</button>
                         </div>
                         <hr /> 
 
                     </div>    
-                                      
+                    
                     <div className="row Content PersonalDetails"> 
                         <div className="col">
                                 <label>Name</label>
-                            <input name="name"   class="form-control" value={this.state.newDiploma.name} onChange={this.handleNewDiplomaChange} required />
+                            <input name="name" className="form-control" value={this.state.newDiploma.name} onChange={this.handleNewDiplomaChange} required />
                         </div>
                         <hr />
                     </div>    
@@ -377,11 +381,11 @@ class Profile extends Component{
                     <div className="row Content PersonalDetails">
                         <div className="col-6">
                             <label>Acquisition Date</label>
-                            <input name="aquisitionDate" type="date"   class="form-control" value={this.formatDate(this.state.newDiploma.acquisitionDate)} onChange={this.handleNewDiplomaChange} required />
+                            <input name="acquisitionDate" type="date" className="form-control" value={this.formatDate(this.state.newDiploma.acquisitionDate)} onChange={this.handleNewDiplomaChange} required />
                         </div>
                         <div className="col-6">
                             <label>Field</label>
-                            <input name="field"   class="form-control" value={this.state.newDiploma.field} onChange={this.handleNewDiplomaChange} required />
+                            <input name="field" className="form-control" value={this.state.newDiploma.field} onChange={this.handleNewDiplomaChange} required />
                         </div>
                     </div>
                     

@@ -82,44 +82,44 @@ class CustomerDashboard extends Component{
                 )
             })
         }
-        return <div class="row">
-            <div class="col-2">
+        return <div className="row">
+            <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-            <div class="col Content">
+            <div className="col Content">
             
                 
-                <div class="row">
-                    <div class="col">
-                        <h5 class="floatLeft">Add new Offer</h5>
-                        <button type="button" class="btn btn-primary floatRight" onClick={()=>this.handleOffer()}>Add</button>
+                <div className="row">
+                    <div className="col">
+                        <h5 className="floatLeft">Add new Offer</h5>
+                        <button type="button" className="btn btn-primary floatRight" onClick={()=>this.handleOffer()}>Add</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
+                <div className="row">
+                    <div className="col">
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
                                     <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="description" onChange={this.handleOfferChange}></textarea>
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="2" name="description" onChange={this.handleOfferChange}></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
+                        <div className="row">
+                            <div className="col-6">
                                 <label for="exampleFormControlTextarea1">City</label>
-                                <input class="form-control" type="text" placeholder="Default input" name="city" onChange={this.handleOfferChange}/>
+                                <input className="form-control" type="text" placeholder="Default input" name="city" onChange={this.handleOfferChange}/>
                             </div>
-                            <div class="col-6">
+                            <div className="col-6">
                                 <label for="exampleFormControlTextarea1">Start Day</label>
-                                <input class="form-control" type="date" onChange={this.handleOfferChange} name="startDay"/>
+                                <input className="form-control" type="date" onChange={this.handleOfferChange} name="startDay"/>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
+                        <div className="row">
+                            <div className="col-6">
+                                <div className="form-group">
                                     <label for="exampleFormControlSelect1">Activity</label>
-                                    <select class="form-control" id="activity" onChange={this.handleOfferChange} name="activity" value={this.state.activity}>
+                                    <select className="form-control" id="activity" onChange={this.handleOfferChange} name="activity" value={this.state.activity}>
                                     <option></option>
                                     <option value="Plomberie" >Plomberie</option>
                                     <option value="DEveloper" >Developer</option>
@@ -127,17 +127,17 @@ class CustomerDashboard extends Component{
                                     
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div className="col-6">
                                 <label for="exampleFormControlTextarea1">Min Wage</label>
-                                <input class="form-control" type="number" onChange={this.handleOfferChange} name="minimumWage"/>
+                                <input className="form-control" type="number" onChange={this.handleOfferChange} name="minimumWage"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                <div class="table">
-                        <div class="titleDashboard">My Offers</div>
-                        <table class="table">
+                <div className="row">
+                <div className="table">
+                        <div className="titleDashboard">My Offers</div>
+                        <table className="table">
                             <thead>
                                 <tr>
                                 <th scope="col">ID </th>
