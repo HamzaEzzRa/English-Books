@@ -9,6 +9,7 @@ import com.titsuite.filters.AuthenticationFilter;
 import com.titsuite.managers.PasswordManager;
 import com.titsuite.managers.TokenManager;
 import com.titsuite.models.AuthCredentials;
+import com.titsuite.models.MessageModel;
 import com.titsuite.utils.Mailer;
 import com.titsuite.utils.RandomStringGenerator;
 import com.titsuite.utils.ResponseBuilder;
@@ -211,7 +212,7 @@ public class UserResource {
                 return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED,
             "Account is not yet verified!");
 
-            // Authentication token to be sent back to caller (Valid for 30 minutes)
+            // Authentication token to be sent back to caller (Valid for 17 minutes)
             Map<String, Object> authDataMap = new HashMap<>(4, 1f);
             authDataMap.put("id", Long.toString(foundUser.getId()));
             authDataMap.put("role", credentials.getRole());
@@ -380,6 +381,36 @@ public class UserResource {
         } catch (SQLException | NumberFormatException e) {
             return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @POST
+    @RolesAllowed({ "customer", "freelancer" })
+    @Path("/sendComplaint")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response sendComplaint(@HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ID) String id,
+        @HeaderParam(AuthenticationFilter.HEADER_PROPERTY_ROLE) String role, final MessageModel message) {
+        new Thread(() -> {
+            UserDAO userDao = new UserDAO();
+
+            Properties properties = new Properties();
+            try {
+                User foundUser = userDao.findUserById(role, Long.parseLong(id));
+                String body = "Message from " + role + ": " + foundUser.getEmail() + "\n\n";
+                body += message.getBody();
+
+                List<Staff> staffList = (List<Staff>) userDao.findUsersByRole("staff");
+                Staff selectedStaff = staffList.get(new Random().nextInt(staffList.size()));
+
+                properties.load(TokenManager.class.getClassLoader().getResourceAsStream("config.properties"));
+                Mailer.sendGmail(properties.getProperty("mailUsername"), properties.getProperty("mailPassword"),
+                    selectedStaff.getEmail(), message.getTitle(), body);
+            } catch (UserNotFoundException | MessagingException | IOException | SQLException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        return ResponseBuilder.createResponse(Response.Status.OK, "Complaint is being sent to staff!");
     }
 
     @GET

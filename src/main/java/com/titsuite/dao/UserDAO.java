@@ -103,8 +103,16 @@ public class UserDAO {
         throws UserNotFoundException, SQLException {
         List<User> userList = new ArrayList<>();
 
+        String tableName = null;
+        if (isCustomer(role))
+            tableName = "CUSTOMER";
+        else if (isFreelancer(role))
+            tableName = "FREELANCER";
+        else if (isStaff(role))
+            tableName = "STAFF";
+
         Connection connection = ConnectionFactory.getConnection();
-        String searchQuery = "SELECT * FROM " + role;
+        String searchQuery = "SELECT * FROM " + tableName;
         if (findBy != null && arg != null)
             searchQuery += " WHERE " + findBy + " = ?";
 
