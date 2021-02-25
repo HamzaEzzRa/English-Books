@@ -37,7 +37,7 @@ try{
 
     connection= ConnectionFactory.getConnection();
     Statement query= connection.createStatement();
-    ResultSet resultSet= query.executeQuery("   select O.city  , O.minimumWage  ,O.STARTDAY, C.first_name,  C.LAST_NAME, R.RATE, R.REVIEW FROM OFFERS O\n" +
+    ResultSet resultSet= query.executeQuery("   select O.city  , O.minimumWage  ,O.STARTDAY, C.first_name,  C.LAST_NAME, R.RATE, R.REVIEW, O.DESCRIPTION FROM OFFERS O\n" +
             "                                                                          RIGHT JOIN CUSTOMER C ON O.REFCUSTOMER=C.ID\n" +
             "                                                                          RIGHT JOIN JOB J on J.REFOFFER=O.ID\n" +
             "                                                                          RIGHT JOIN RATE R ON J.REFRATE=R.ID\n" +
@@ -46,7 +46,7 @@ try{
 
 
     while(resultSet.next()){
-        Job myjob=new Job(resultSet.getString(1),resultSet.getInt(2),resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),resultSet.getInt(6), resultSet.getString(7)  );
+        Job myjob=new Job(resultSet.getString(1),resultSet.getInt(2),resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),resultSet.getInt(6), resultSet.getString(7) ,resultSet.getString(8) );
       myjobs.add(myjob);
     }
 } catch (SQLException throwables) {

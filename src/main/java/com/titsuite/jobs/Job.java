@@ -11,8 +11,9 @@ public class Job {
    private String last_name;
    private int rate;
    private String review;
+   private String description;
 
-   public Job(String city, int minimumWage, String period, String first_name, String last_name, int rate, String review) {
+   public Job(String city, int minimumWage, String period, String first_name, String last_name, int rate, String review, String description) {
       this.city = city;
       this.minimumWage = minimumWage;
       this.period = period;
@@ -20,6 +21,15 @@ public class Job {
       this.last_name = last_name;
       this.rate = rate;
       this.review = review;
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
    }
 
    public String getCity() {
