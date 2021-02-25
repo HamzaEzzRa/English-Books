@@ -38,7 +38,7 @@ export default class Portfeuille extends Component {
                     <RiFolderUserLine /> Mr. {item.last_name} {item.first_name} <br/>
                     <IoMdLocate /> {item.city} <br/>
                     <FaMoneyBillWave /> {item.minimumWage} <br/>
-                    <BsCalendar /> {item.startDay} <br/>
+                    <BsCalendar /> {item.period} <br/>
                     <FaRegComments /> {item.review}
                 </div>
                 )
