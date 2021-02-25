@@ -5,8 +5,10 @@ import HorizontalNav from "./HorizontalNav";
 import './portfeuille.css'
 import {BsCalendar, BsSearch} from 'react-icons/bs'
 import {IoMdLocate, IoIosNotifications} from 'react-icons/io'
-import {FaMoneyBillWave} from 'react-icons/fa'
-import {GrUserWorker} from 'react-icons/gr'
+import {FaMoneyBillWave, FaRegComments} from 'react-icons/fa'
+import {RiFolderUserLine} from 'react-icons/ri'
+import {MdDescription} from 'react-icons/md'
+import portfeuille from './images/portefeuille.svg'
 
 export default class Portfeuille extends Component {
     state ={
@@ -31,13 +33,13 @@ export default class Portfeuille extends Component {
         const offers = ()=>{
             return this.state.items.map((item) => {
                 return (<div className="serviceItem">
-                    <h6>{item.description} </h6> <br/>
-                    
-                    <GrUserWorker /> {item.activity} <br/>
+                    <h6><MdDescription/> {item.description} </h6> 
+                    <hr/>
+                    <RiFolderUserLine /> Mr. {item.last_name} {item.first_name} <br/>
                     <IoMdLocate /> {item.city} <br/>
                     <FaMoneyBillWave /> {item.minimumWage} <br/>
-                    <BsCalendar /> {item.startDay}
-                    <hr />
+                    <BsCalendar /> {item.startDay} <br/>
+                    <FaRegComments /> {item.review}
                 </div>
                 )
             })
@@ -59,14 +61,13 @@ export default class Portfeuille extends Component {
                         </div>
                         <div className="col">
                             <div className="Header">
-                                <b>Saturday, February 20th</b>
+                                <b>Saturday, February 27th</b>
                                 <hr />
                             </div>
 
                             <div className="row">
-                                <div className="col">
-                                    <div className="leftFloat"><b>Soufiane Hajazi</b></div>
-                                    <div className="rightFloat"><button type="button" className="btn ">Edit</button></div>
+                                <div className="col img_port">
+                                 <img src={portfeuille} className="img-fluid" alt="Logo" />
                                 </div>
                                 
                             </div>

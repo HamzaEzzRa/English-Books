@@ -98,6 +98,9 @@ class CustomerProfile extends Component {
                         subscription: data.subscription
                     }
                 );
+                localStorage.setItem('FirstName', data.firstName);
+                    
+                localStorage.setItem('LastName', data.lastName);
             }
         });
     }

@@ -1,5 +1,6 @@
 import {React, Component } from "react"
 import HorizontalNav from "./HorizontalNav"
+import customerHistorique from './images/customerHistorique.svg'
 
 export default class CustomerHistorique extends Component{
 
@@ -40,8 +41,11 @@ export default class CustomerHistorique extends Component{
                 <div className="col-2">
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
-                <div className="col Content">
+                <div className="col-5 Content">
                    {offers()}
+                </div>
+                <div className="col-4 profileIllustration">
+                    <img src={customerHistorique} className="img-fluid" alt="Logo" />
                 </div>
             </div>
         )

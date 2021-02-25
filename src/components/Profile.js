@@ -216,7 +216,11 @@ class Profile extends Component{
                         minimumWage: data.minimumWage,
                         diplomas: JSON.parse(data.diplomas)
                     }
-                );
+                );    
+                    localStorage.setItem('FirstName', data.firstName);
+                    
+                    localStorage.setItem('LastName', data.lastName);
+                
             }
         });
     }

@@ -6,7 +6,7 @@ import {AiFillTags} from 'react-icons/ai'
 import {MdDashboard} from 'react-icons/md'
 import {IoMdChatboxes} from 'react-icons/io'
 import {ImHistory } from 'react-icons/im';
-import {CgProfile} from 'react-icons/cg';
+import {CgProfile, CgLogOut} from 'react-icons/cg';
 import { Link, withRouter } from "react-router-dom"
 import { React, Component } from "react"
 
@@ -58,13 +58,13 @@ class HorizontalNav extends Component{
                             
                         </li>
 
-                        <li className="nav-item BottomNav">
+                        <li className="nav-item BottomNav1">
                                 
-                                <div class="d-inline bg-primary text-white "> <CgProfile/> Hamid Aarif </div>
+                                <div class="d-inline  text-dark "> <CgProfile/> {localStorage.getItem('FirstName')} {localStorage.getItem('LastName')} </div>
                         
                         </li>
-                        <li className="nav-item BottomNav1">
-                                <button onClick={this.handleLogout} className="btn  btn-lg btn-block logoutButton">Logout</button>
+                        <li className="nav-item BottomNav">
+                                <button onClick={this.handleLogout} className="btn  btn-lg  btn-block logoutButton"><CgLogOut/> Logout</button>
                         </li>
                         <div className="BottomNav">
                             
