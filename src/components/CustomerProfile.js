@@ -1,6 +1,8 @@
 import { React, Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import HorizontalNav from './HorizontalNav';
+import './customerProfile.css'
+import customerIllustration from './images/customerProfile.svg'
 
 
 class CustomerProfile extends Component {
@@ -115,45 +117,24 @@ class CustomerProfile extends Component {
     }
 
     render() {
-        return (
-            <div className="container">
-
-                <div className="row">
+        return (<div className="row">
                     <div className="col-2">
                         <HorizontalNav logout={this.props.rest.logout}/>
                     </div>
-                    <div className="col">
-
-                    
-                <div className="row ">
-                        <div className="col ProfileHeader">
-                            <h2 className="freelancerProfile">Customer Profile</h2>
-                            <div className="floatRight">
-                                <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
-                            </div>
-                        </div>
+                    <div className="col-4 img-center">
+                     <img src={customerIllustration} className="img-fluid" alt="Logo" />
                     </div>
-
-                <div className="main-body">
-                    <div className="col-md-8">
-                        <div className="card mb-3">
-                            <div className="card-body">
+                    <div className="col-5 Content MoreStyle">
+                        
                             <form onSubmit={this.handleProfileUpdate}>
                                 <div >
-                                        <div className="row">
-                                            <div className="col">
-                                                <button type="submit" className="btn btn-danger floatRight">Save</button>
-                                                <h3 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h3>
-                                                <p></p>
-                                            </div>
+                                    <div className="row">
+                                        <div className="col">
+                                            <button type="submit" className="btn btn-danger floatRight">Save</button>
+                                            <h5 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h5>
+                                            <p></p>
                                         </div>
-                                        {/* <div className="row">
-                                            <div className="col">
-                                                <label>Email : </label>
-                                                {/* <input name="email" type="email" value= readOnly={true} required /> */}
-                                            {/* </div>
-                                        <hr />
-                                        </div> */} 
+                                    </div>
                                         
                                         <div className="row">
                                             <div className="col-6">
@@ -202,14 +183,15 @@ class CustomerProfile extends Component {
                                       
                                     </div>
                                     </form>  
-                            </div>
-                        </div>
-                    </div>
-                    </div>
 
+                        
+
+                    </div>
+                    
+
+                
                 </div>
-                </div>
-            </div>
+                
         );
     }
 }

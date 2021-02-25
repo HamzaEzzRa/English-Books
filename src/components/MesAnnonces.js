@@ -61,7 +61,7 @@ class MesAnnonces extends Component {
                     <div className="col Content">
                         <div className="row">
                             <div className="col filterRow">
-                                <span id="nbOfServices"> <BsSearch/> | {this.state.size} services available</span>
+                                <span class="overview"> <BsSearch/> | {this.state.size} services available</span>
                                 <span id="recent"> Recent | <IoIosNotifications/> </span>
                             </div>
                         </div>

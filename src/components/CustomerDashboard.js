@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import CustomerNavbar from "./CustomerNavbar";
 import HorizontalNav from "./HorizontalNav";
 import './customerDashboard.css'
-import Select from "react-select"
+
 
 class CustomerDashboard extends Component{
 
@@ -67,6 +67,23 @@ class CustomerDashboard extends Component{
         )
     }
 
+    formatDate = (date) => {
+        if (date == null || date === '')
+            return '';
+        
+        let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
     render(){
         const offers = ()=>{
             return this.state.items.map((item) => {
@@ -87,53 +104,61 @@ class CustomerDashboard extends Component{
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
             <div className="col Content">
-            
-                
                 <div className="row">
-                    <div className="col">
-                        <h5 className="floatLeft">Add new Offer</h5>
-                        <button type="button" className="btn btn-primary floatRight" onClick={()=>this.handleOffer()}>Add</button>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
+                    <div className="col addNew">
                         <div className="row">
                             <div className="col">
-                                <div className="form-group">
-                                    <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="2" name="description" onChange={this.handleOfferChange}></textarea>
-                                </div>
+                                <h4 className="floatLeft">Add new Offer</h4>
+                                <button type="button" className="btn btn-primary floatRight" onClick={()=>this.handleOffer()}>Add</button>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <label for="exampleFormControlTextarea1">City</label>
-                                <input className="form-control" type="text" placeholder="Default input" name="city" onChange={this.handleOfferChange}/>
-                            </div>
-                            <div className="col-6">
-                                <label for="exampleFormControlTextarea1">Start Day</label>
-                                <input className="form-control" type="date" onChange={this.handleOfferChange} name="startDay"/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label for="exampleFormControlSelect1">Activity</label>
-                                    <select className="form-control" id="activity" onChange={this.handleOfferChange} name="activity" value={this.state.activity}>
-                                    <option></option>
-                                    <option value="Plomberie" >Plomberie</option>
-                                    <option value="DEveloper" >Developer</option>
-                                    </select>
-                                    
+                        <div className="row addNewContent">
+                            <div className="col">
+                                <div className="row ">
+                                    <div className="col">
+                                        <div className="row">
+                                            <div className="col">
+                                                <div className="form-group">
+                                                    <label for="exampleFormControlTextarea1">Description</label>
+                                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="2" name="description" onChange={this.handleOfferChange}></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <label for="exampleFormControlTextarea1">City</label>
+                                                <input className="form-control" type="text" placeholder="Default input" name="city" onChange={this.handleOfferChange}/>
+                                            </div>
+                                            <div className="col-6">
+                                                <label for="exampleFormControlTextarea1">Start Day</label>
+                                                <input className="form-control" type="date" onChange={this.formatDate(this.handleOfferChange)} name="startDay"/>
+                                                 {/* this.handleOfferChange} */}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <div className="form-group">
+                                                    <label for="exampleFormControlSelect1">Activity</label>
+                                                    <select className="form-control" id="activity" onChange={this.handleOfferChange} name="activity" value={this.state.activity}>
+                                                    <option></option>
+                                                    <option value="Plomberie" >Plomberie</option>
+                                                    <option value="DEveloper" >Developer</option>
+                                                    </select>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <label for="exampleFormControlTextarea1">Min Wage</label>
+                                                <input className="form-control" type="number" onChange={this.handleOfferChange} name="minimumWage"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="col-6">
-                                <label for="exampleFormControlTextarea1">Min Wage</label>
-                                <input className="form-control" type="number" onChange={this.handleOfferChange} name="minimumWage"/>
                             </div>
                         </div>
                     </div>
                 </div>
+                
                 <div className="row">
                 <div className="table">
                         <div className="titleDashboard">My Offers</div>

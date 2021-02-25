@@ -1,10 +1,11 @@
-import logo from './images/logo.svg';
 import './dashboard.css';
-import MesAnnonces from './MesAnnonces';
-import Portfeuille from './Portfeuille';
 import HorizontalNav from './HorizontalNav';
 import { Line } from 'react-chartjs-2';
 import {React, Component} from 'react';
+import {MdArrowBack} from 'react-icons/md'
+import {BsCalendar, BsSearch} from 'react-icons/bs'
+import {IoIosNotifications} from 'react-icons/io'
+
 
 class Dashboard extends Component {
     state = {
@@ -70,9 +71,17 @@ class Dashboard extends Component {
                     <HorizontalNav logout={this.props.rest.logout}/>
                 </div>
                 <div className="col Content">
-                    <div className="overview">  Overview </div>
-                    <div className="dashboardHeaer">
-                        <div className="titleDashboard">Revenus journaliers</div>
+                    <div >
+                         <div className="overview" style={{color: "blue"}} ><MdArrowBack/> Overview</div>
+                         <div id="recent"> <BsSearch/> | <IoIosNotifications/> </div>
+                    </div>
+                    <br /><br /><br />
+                    <div className="col dashboardHeaer">
+                        
+                        <div id="recent">
+                            <span ><BsCalendar/> 20Jan</span> to <span ><BsCalendar/> 20Sep</span>
+                        </div>
+                        <div className="titleDashboard" >Revenus journaliers</div>
                     </div>
                     <div className="chart"><Line 
                         data={{
@@ -102,7 +111,7 @@ class Dashboard extends Component {
 
 
                     <div className="table">
-                        <div className="titleDashboard">Prestations à acceptées</div>
+                        <div className="titleDashboard">New Job</div>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -111,7 +120,7 @@ class Dashboard extends Component {
                                 <th scope="col">City</th>
                                 <th scope="col">Minimum Wage</th>
                                 <th scope="col">Start Date</th>
-                                <th scope="col">Accepter / Refuser</th>
+                                <th scope="col">Accept </th>
                                 </tr>
                             </thead>
                             <tbody>

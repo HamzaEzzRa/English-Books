@@ -3,6 +3,8 @@ import {React, Component} from 'react'
 import { withRouter } from "react-router-dom";
 import './profile.css'
 import profilePng from './images/profile.png'
+import newDiploma from './images/newDiploma.svg'
+import diplomas from './images/diplomas.svg'
 
 class Profile extends Component{
     state = {
@@ -268,9 +270,9 @@ class Profile extends Component{
                 <div className="col Content ">
                     <div className="row ">
                         <div className="col ProfileHeader">
-                            <h2 className="freelancerProfile">Freelancer Profile</h2>
+                            <h2 className="freelancerProfile"></h2>
                             <div className="floatRight">
-                                <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
+                                
                             </div>
                         </div>
                     </div>
@@ -286,18 +288,12 @@ class Profile extends Component{
                                     <div >
                                         <div className="row">
                                             <div className="col">
-                                                <button type="submit" className="btn btn-danger floatRight">Save</button>
-                                                <h3 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h3>
+                                                <button type="submit" className="btn btn-success floatRight">Save</button>
+                                                <h5 className="freelancerProfile"> Personal Details <br/> {this.state.email} </h5>
                                                 <p></p>
                                             </div>
                                         </div>
-                                        {/* <div className="row">
-                                            <div className="col">
-                                                <label>Email : </label>
-                                                {/* <input name="email" type="email" value= readOnly={true} required /> */}
-                                            {/* </div>
-                                        <hr />
-                                        </div> */} 
+                                        
                                         
                                         <div className="row">
                                             <div className="col-6">
@@ -354,16 +350,21 @@ class Profile extends Component{
                         </div>
                         
                     </div>
-                    <div className="row">
-                        <div className="col-2"></div>
-                        <div className="col-8 Content PersonalDetails">
+                    <div className="row Content ">
+                        <div className="col-4">
+                                <img src={newDiploma} className="img-fluid" alt="Profile" />
+                            </div>
+                        <div className="col-8  PersonalDetails">
                             {diplomaList()}
                         </div>
                     </div>
                     
                     
-                        <div className="row ">
-                            <div className="col-8 Content PersonalDetails">
+                        <div className="row Content ">
+                            <div className="col-4">
+                                <img src={diplomas} className="img-fluid" alt="Profile" />
+                            </div>
+                            <div className="col-8  PersonalDetails">
                                 <div class="row">
                                     <div className="col">
                                         <h3 className="freelancerProfile">Add new Diploma</h3>
