@@ -13,10 +13,10 @@
 }
 
 .serviceItem{
-    padding: 2%;
+    padding: 1%;
     /* box-shadow: 0.5em 0 .7em rgb(241, 241, 241), -0.5em 0 .7em rgb(233, 233, 233); */
     background-color: #CAF0F8;
-    border-top: black;
+    border-bottom: black;
 }
 
 .serviceItem:hover {

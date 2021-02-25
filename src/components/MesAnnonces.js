@@ -2,6 +2,11 @@ import { React, Component } from "react";
 import { withRouter } from "react-router-dom";
 import HorizontalNav from "./HorizontalNav";
 import cardTest from './images/cardTest.svg'
+import {BsCalendar, BsSearch} from 'react-icons/bs'
+import {IoMdLocate, IoIosNotifications} from 'react-icons/io'
+import {FaMoneyBillWave} from 'react-icons/fa'
+import {GrUserWorker} from 'react-icons/gr'
+
 import "./mesAnnonces.css"
 
 class MesAnnonces extends Component {
@@ -33,11 +38,15 @@ class MesAnnonces extends Component {
         const offers = ()=>{
             return this.state.items.map((item) => {
                 return (
-                    <div className="card col-3">
-                        <img className="card-img-top" src={cardTest} alt="Card image cap" />
-                        <div className="card-body">
-                            <h5 className="card-title">{item.description}</h5>
-                            <p className="card-text">{item.city} / {item.startDay} / {item.minimumWage}</p>
+                    <div class="card text-dark bg-light mb-3" >
+                        <div class="card-header"><BsCalendar /> {item.startDay}</div>
+                        <div class="card-body">
+                            <h6 class="card-title">{item.description}</h6>
+                            <p class="card-text">
+                                <IoMdLocate /> {item.city}. <br /> 
+                                <GrUserWorker /> {item.activity}. <br />
+                                <FaMoneyBillWave /> {item.minimumWage} Dh. 
+                            </p>
                         </div>
                     </div>
                 )
@@ -52,12 +61,12 @@ class MesAnnonces extends Component {
                     <div className="col Content">
                         <div className="row">
                             <div className="col filterRow">
-                                <span id="nbOfServices">{this.state.size} services available</span>
-                                <span id="recent"> Recent</span>
+                                <span id="nbOfServices"> <BsSearch/> | {this.state.size} services available</span>
+                                <span id="recent"> Recent | <IoIosNotifications/> </span>
                             </div>
                         </div>
 
-                        <div className="row">
+                        <div className="row toBeCentered">
                             {offers()}   
                         </div>
                     </div>

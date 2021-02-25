@@ -1,8 +1,12 @@
 import "./dashboard.css"
 import logo from "./images/logo.svg"
 import './horizontalNav.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquare, faHome } from '@fortawesome/free-solid-svg-icons'
+
+import {AiFillTags} from 'react-icons/ai'
+import {MdDashboard} from 'react-icons/md'
+import {IoMdChatboxes} from 'react-icons/io'
+import {ImHistory } from 'react-icons/im';
+import {CgProfile} from 'react-icons/cg';
 import { Link, withRouter } from "react-router-dom"
 import { React, Component } from "react"
 
@@ -32,34 +36,38 @@ class HorizontalNav extends Component{
                         </li>
                         <li className="nav-item">
                             {(localStorage.getItem('role') === 'freelancer') ? 
-                            <a className="nav-link active" href="#"><Link to="/dashboard" ><FontAwesomeIcon icon={faSquare} /> Dashboard</Link></a>
-                             : <a className="nav-link active" href="#"><Link to="/customer/dashboard" ><FontAwesomeIcon icon={faHome} /> Dashboard</Link></a>}
+                            <a className="nav-link active" href="#"><Link to="/dashboard" ><MdDashboard /> Dashboard</Link></a>
+                             : <a className="nav-link active" href="#"><Link to="/customer/dashboard" ><MdDashboard /> Dashboard</Link></a>}
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#"><Link to="/annonces" > <FontAwesomeIcon icon={faHome} />Annonces</Link></a>
+                            <a className="nav-link" href="#"><Link to="/annonces" > <AiFillTags /> Annonces</Link></a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#"><Link to="/service-client" >Service Client</Link></a>
+                            <a className="nav-link" href="#"><Link to="/service-client" ><IoMdChatboxes /> Service Client</Link></a>
                         </li>
                         <li className="nav-item">
                         {(localStorage.getItem('role') === 'freelancer') ? 
-                             <a className="nav-link" href="#"><Link to="/portfeuille" >Portfeuille</Link></a>
-                             : <a className="nav-link active" href="#"><Link to="/customer/historique" >Historique</Link></a>}
+                             <a className="nav-link" href="#"><Link to="/portfeuille" ><ImHistory /> Portfeuille</Link></a>
+                             : <a className="nav-link active" href="#"><Link to="/customer/historique" ><ImHistory/> Historique</Link></a>}
                             
                         </li>
                         <li className="nav-item">
                         {(localStorage.getItem('role') === 'freelancer') ? 
-                            <a className="nav-link" href="#"><Link to="/freelancer/profile" >Profile</Link></a>
-                             : <a className="nav-link" href="#"><Link to="/customer/profile" >Profile</Link></a>}
+                            <a className="nav-link" href="#"><Link to="/freelancer/profile" > <CgProfile/> Profile</Link></a>
+                             : <a className="nav-link" href="#"><Link to="/customer/profile" ><CgProfile/> Profile</Link></a>}
                             
+                        </li>
+
+                        <li className="nav-item BottomNav">
+                                
+                                <div class="d-inline bg-primary text-white "> <CgProfile/> Hamid Aarif </div>
+                        
+                        </li>
+                        <li className="nav-item BottomNav1">
+                                <button onClick={this.handleLogout} className="btn  btn-lg btn-block logoutButton">Logout</button>
                         </li>
                         <div className="BottomNav">
-                            <li className="nav-item ">
-                                <a className="nav-link" href="#">Hamid Aarif</a>
-                            </li>
-                            <li className="nav-item ">
-                                <button onClick={this.handleLogout} className="btn btn-danger logoutButton">Logout</button>
-                            </li>
+                            
                         </div>
                     </ul>
         </div>

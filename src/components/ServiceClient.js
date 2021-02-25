@@ -73,7 +73,7 @@ class Profile extends Component{
                                             </div>
                                             <div className="col-12">
                                                 <label>Body</label>
-                                                <textarea name="body" rows="10" value={this.state.body} onChange={this.handleChange} className="form-control" required />
+                                                <textarea name="body" rows="6" value={this.state.body} onChange={this.handleChange} className="form-control" required />
                                             </div>
                                         </div>
                                         <hr />

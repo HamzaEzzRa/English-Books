@@ -361,33 +361,39 @@ class Profile extends Component{
                         </div>
                     </div>
                     
-                    <div className="row Content PersonalDetails">
-                        <div className="col">
-                            <h3 className="freelancerProfile">Add new Diploma</h3>
-                            <button type="button" className="btn btn-primary floatRight" onClick={this.handleAddDiploma}>Add</button>
-                        </div>
-                        <hr /> 
-
-                    </div>    
                     
-                    <div className="row Content PersonalDetails"> 
-                        <div className="col">
-                                <label>Name</label>
-                            <input name="name" className="form-control" value={this.state.newDiploma.name} onChange={this.handleNewDiplomaChange} required />
-                        </div>
-                        <hr />
-                    </div>    
-                                    
-                    <div className="row Content PersonalDetails">
-                        <div className="col-6">
-                            <label>Acquisition Date</label>
-                            <input name="acquisitionDate" type="date" className="form-control" value={this.formatDate(this.state.newDiploma.acquisitionDate)} onChange={this.handleNewDiplomaChange} required />
-                        </div>
-                        <div className="col-6">
-                            <label>Field</label>
-                            <input name="field" className="form-control" value={this.state.newDiploma.field} onChange={this.handleNewDiplomaChange} required />
-                        </div>
-                    </div>
+                        <div className="row ">
+                            <div className="col-8 Content PersonalDetails">
+                                <div class="row">
+                                    <div className="col">
+                                        <h3 className="freelancerProfile">Add new Diploma</h3>
+                                        <button type="button" className="btn btn-primary floatRight" onClick={this.handleAddDiploma}>Add</button>
+                                    </div>
+                                    <hr /> 
+                                </div>
+                                <div className="row "> 
+                                    <div className="col">
+                                            <label>Name</label>
+                                        <input name="name" className="form-control" value={this.state.newDiploma.name} onChange={this.handleNewDiplomaChange} required />
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div className="row ">
+                                    <div className="col-6">
+                                        <label>Acquisition Date</label>
+                                        <input name="acquisitionDate" type="date" className="form-control" value={this.formatDate(this.state.newDiploma.acquisitionDate)} onChange={this.handleNewDiplomaChange} required />
+                                    </div>
+                                    <div className="col-6">
+                                        <label>Field</label>
+                                        <input name="field" className="form-control" value={this.state.newDiploma.field} onChange={this.handleNewDiplomaChange} required />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div> 
+
+                          
+                    
                     
                 </div>
         </div>

@@ -21,8 +21,17 @@
 }
 
 .card{
-    border-radius: 70px;
+    margin: 10px;
     font-size: 14px;
-    margin: 4%;
+    border: 0;
+    width: 14rem;
 }
 
+.card-header{
+    color: rgb(112, 37, 10);
+}
+
+.toBeCentered{
+    padding-left: auto;
+    padding-right: auto;
+}

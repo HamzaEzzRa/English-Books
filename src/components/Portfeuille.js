@@ -3,6 +3,10 @@ import { React, Component } from "react";
 import { withRouter } from "react-router-dom";
 import HorizontalNav from "./HorizontalNav";
 import './portfeuille.css'
+import {BsCalendar, BsSearch} from 'react-icons/bs'
+import {IoMdLocate, IoIosNotifications} from 'react-icons/io'
+import {FaMoneyBillWave} from 'react-icons/fa'
+import {GrUserWorker} from 'react-icons/gr'
 
 export default class Portfeuille extends Component {
     state ={
@@ -27,13 +31,13 @@ export default class Portfeuille extends Component {
         const offers = ()=>{
             return this.state.items.map((item) => {
                 return (<div className="serviceItem">
-                    {item.id} -- 
-                    {item.description} -- 
-                    {item.activity} -- 
-                    {item.city} -- 
-                    {item.minimumWage} --
-                    {item.startDay} --
+                    <h6>{item.description} </h6> <br/>
                     
+                    <GrUserWorker /> {item.activity} <br/>
+                    <IoMdLocate /> {item.city} <br/>
+                    <FaMoneyBillWave /> {item.minimumWage} <br/>
+                    <BsCalendar /> {item.startDay}
+                    <hr />
                 </div>
                 )
             })

@@ -108,7 +108,6 @@ class Dashboard extends Component {
                                 <tr>
                                 <th scope="col">ID </th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Activity</th>
                                 <th scope="col">City</th>
                                 <th scope="col">Minimum Wage</th>
                                 <th scope="col">Start Date</th>
