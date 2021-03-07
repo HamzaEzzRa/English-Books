@@ -24,8 +24,8 @@ import static org.junit.Assert.assertEquals;
 @RunAsClient
 public class UserCreationTest {
 
-    public static final String TEST_EMAIL = "hamzavitsh@gmail.com";
-    public static final String TEST_PASSWORD = "Titsuite123456";
+    public static final String TEST_EMAIL = "jamai.mohamedamine2017@gmail.com";
+    public static final String TEST_PASSWORD = "amine";
     public static final String TEST_CITY = "Casablanca";
     public static final String TEST_ADDRESS = "Sidi Maarouf Lot El Haddioui";
     public static final String TEST_PHONE_NUMBER = "212679223766";

@@ -5,6 +5,7 @@ import com.titsuite.filters.AuthenticationFilter;
 import com.titsuite.managers.TokenManager;
 import com.titsuite.users.Customer;
 import com.titsuite.users.User;
+import com.titsuite.utils.DateMapper;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 
 import javax.annotation.security.DeclareRoles;
@@ -47,7 +48,7 @@ public class OffersResource {
             preparedStatement.setInt(3, newOffer.getMinimumWage());
             preparedStatement.setString(4, newOffer.getStatus());
             preparedStatement.setString(5, newOffer.getRefCustomer());
-            preparedStatement.setString(6, newOffer.getStartDay());
+            preparedStatement.setDate(6, DateMapper.javaToSqlDate(newOffer.getStartDay()));
             preparedStatement.setString(7, newOffer.getActivity());
 
             preparedStatement.executeUpdate();
@@ -77,11 +78,11 @@ public class OffersResource {
             statement = connection.createStatement();
 
 
-            resultSet = statement.executeQuery("SELECT * FROM OFFERS");
+            resultSet = statement.executeQuery("SELECT * FROM OFFERS WHERE STATUS != 'prise en charge' ");
 
 
             while (resultSet.next()) {
-                Offer temp = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer temp = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 allOffers.add(temp);
 
 
@@ -110,7 +111,7 @@ public class OffersResource {
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 filteredOffersByCity.add(data);
             }
 
@@ -138,7 +139,7 @@ public class OffersResource {
             ResultSet resultSet = statement2.executeQuery();
 
             while (resultSet.next()) {
-                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 filteredOffersById.add(data);
             }
 
@@ -206,7 +207,7 @@ public class OffersResource {
             ResultSet resultSet = statement2.executeQuery();
 
             while (resultSet.next()) {
-                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 filteredOffersById.add(data);
                 System.out.println(resultSet.getString(5));
             }
@@ -234,7 +235,7 @@ public class OffersResource {
             ResultSet resultSet = statement2.executeQuery();
 
             while (resultSet.next()) {
-                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer data = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 filteredOffersById.add(data);
                 System.out.println(resultSet.getString(5));
             }
@@ -293,7 +294,7 @@ public class OffersResource {
 
 
             while (resultSet.next()) {
-                Offer temp = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8));
+                Offer temp = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getString(5), resultSet.getString(6), DateMapper.sqlToJavaDate(resultSet.getDate(7)), resultSet.getString(8));
                 allOffers.add(temp);
 
 
